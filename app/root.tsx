@@ -1,17 +1,3 @@
-import {
-  LiveReload,
-  Outlet,
-  LinksFunction,
-  Links,
-  useCatch,
-  MetaFunction,
-  Meta,
-  Scripts,
-  ScrollRestoration,
-  LoaderFunction,
-  useLoaderData,
-  ActionFunction,
-} from "remix";
 import styles from "./styles/app.css";
 import { useSetupTranslations } from "remix-i18next";
 import { createUserSession, getUserInfo } from "./utils/session.server";
