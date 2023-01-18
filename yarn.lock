@@ -1469,7 +1469,7 @@
   dependencies:
     "@remix-run/node" "1.10.1"
 
-"@remix-run/node@1.10.1":
+"@remix-run/node@1.10.1", "@remix-run/node@^1.10.1":
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/@remix-run/node/-/node-1.10.1.tgz#a9aadb2c0f4208542a074eedf66b15b9b42e180f"
   integrity sha512-MnBkI/peNHs94ipw2SpX5wdY0kQOCtdfufuo9iq7W2zrrUEdRBXJyfkxU/zvzYZbtTwWKwo0g8irZKz88r4oEg==
@@ -7099,11 +7099,6 @@ remix-i18next@^5.0.0:
     intl-parse-accept-language "^1.0.0"
     lru-cache "^7.14.1"
     use-consistent-value "^1.0.0"
-
-remix@^1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/remix/-/remix-1.10.1.tgz#0d3391f910df0140a1c1c5a425836292631e64ed"
-  integrity sha512-s0n9SBQPdTQdEjPxIK8EIVEivAm6PUSX44o8iXFCXNycCaBONNcIvG2q0gOcKpmg4ieQUF/4ah+tn1CJIQ1WRg==
 
 repeat-element@^1.1.2:
   version "1.1.4"
