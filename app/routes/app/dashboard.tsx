@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { UserDto } from "~/application/dtos/core/users/UserDto";
 import UserUtils from "~/utils/store/UserUtils";
-import { json, LoaderFunction, MetaFunction, useCatch } from "remix";
 import { useAppData } from "~/utils/data/useAppData";
 import MySubscriptionProducts from "~/components/core/settings/subscription/MySubscriptionProducts";
 import { loadDashboardData } from "~/utils/data/useDashboardData";

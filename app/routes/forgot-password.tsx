@@ -4,7 +4,6 @@ import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { ActionFunction, Form, json, LoaderFunction, MetaFunction, useActionData } from "remix";
 import crypto from "crypto";
 import { getUserByEmail, updateUserVerifyToken } from "~/utils/db/users.db.server";
 import { i18n } from "~/locale/i18n.server";

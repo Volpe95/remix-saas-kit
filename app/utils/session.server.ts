@@ -1,4 +1,3 @@
-import { createCookieSessionStorage, redirect } from "remix";
 import { UserType } from "~/application/enums/core/users/UserType";
 
 import { db } from "./db.server";

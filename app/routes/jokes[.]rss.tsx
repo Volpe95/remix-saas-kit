@@ -1,5 +1,3 @@
-import type { LoaderFunction } from "remix";
-
 import { db } from "~/utils/db.server";
 
 function escapeCdata(s: string) {

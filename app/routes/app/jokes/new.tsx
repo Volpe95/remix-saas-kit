@@ -1,4 +1,3 @@
-import { ActionFunction, Form, json, Link, LoaderFunction, MetaFunction, useActionData, useCatch, useTransition } from "remix";
 import { redirect } from "remix";
 import { JokeDisplay } from "~/components/joke";
 import { db } from "~/utils/db.server";

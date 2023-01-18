@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Tabs, { TabItem } from "~/components/ui/tabs/Tabs";
-import { json, Link, LoaderFunction, MetaFunction, redirect } from "remix";
 
 export const meta: MetaFunction = () => ({
   title: "Links | Remix SaasFrontend",

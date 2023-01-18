@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import clsx from "~/utils/shared/ClassesUtils";
 import { useAppData } from "~/utils/data/useAppData";
-import { useLoaderData, useTransition } from "remix";
 import { DashboardLoaderData } from "~/utils/data/useDashboardData";
 import clsx from "clsx";
 

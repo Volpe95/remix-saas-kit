@@ -1,7 +1,6 @@
 import Footer from "~/components/front/Footer";
 import Header from "~/components/front/Header";
 import { useTranslation } from "react-i18next";
-import { json, LoaderFunction, MetaFunction } from "remix";
 import { i18n } from "~/locale/i18n.server";
 
 export const meta: MetaFunction = () => ({

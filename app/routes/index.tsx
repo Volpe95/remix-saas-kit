@@ -5,7 +5,6 @@ import JoinNow from "~/components/front/JoinNow";
 import { i18n } from "~/locale/i18n.server";
 import { Language } from "remix-i18next";
 import { getUserInfo } from "~/utils/session.server";
-import { MetaFunction, LoaderFunction, json, useCatch } from "remix";
 
 export const meta: MetaFunction = () => ({
   title: "Remix SaasFrontend",

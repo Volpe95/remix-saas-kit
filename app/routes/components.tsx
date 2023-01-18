@@ -1,7 +1,6 @@
 import Footer from "~/components/front/Footer";
 import Header from "~/components/front/Header";
 import AllComponentsList from "~/components/ui/AllComponentsList";
-import { json, LoaderFunction, MetaFunction } from "remix";
 import { useTranslation } from "react-i18next";
 import { i18n } from "~/locale/i18n.server";
 

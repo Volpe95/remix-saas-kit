@@ -1,4 +1,3 @@
-import { json } from "remix";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { WorkspaceType } from "~/application/enums/core/tenants/WorkspaceType";
 import { createTenant, createTenantUser } from "../db/tenants.db.server";

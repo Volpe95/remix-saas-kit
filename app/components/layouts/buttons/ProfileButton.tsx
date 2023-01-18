@@ -5,7 +5,6 @@ import { Fragment, useState } from "react";
 import clsx from "~/utils/shared/ClassesUtils";
 import { useOuterClick } from "~/utils/shared/KeypressUtils";
 import { useAppData } from "~/utils/data/useAppData";
-import { useSubmit } from "remix";
 import UserUtils from "~/utils/store/UserUtils";
 
 export default function ProfileButton() {

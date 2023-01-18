@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { MetaFunction } from "remix";
 import AllComponentsList from "~/components/ui/AllComponentsList";
 
 export const meta: MetaFunction = () => ({

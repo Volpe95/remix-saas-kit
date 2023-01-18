@@ -3,7 +3,6 @@ import { ContractStatusFilter } from "~/application/contracts/app/contracts/Cont
 import Loading from "~/components/ui/loaders/Loading";
 import { useState, useEffect } from "react";
 import ContractsListAndTable from "./ContractsListAndTable";
-import { useLoaderData, useTransition } from "remix";
 import { Contract, Link, User, Workspace } from "@prisma/client";
 import { getContracts } from "~/utils/db/contracts.db.server";
 

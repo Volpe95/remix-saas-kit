@@ -7,7 +7,6 @@ import UserUtils from "~/utils/store/UserUtils";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LoaderFunction, json, ActionFunction, Form, useActionData, MetaFunction } from "remix";
 import { i18n } from "~/locale/i18n.server";
 import { getUserByEmail, updateUserPassword } from "~/utils/db/users.db.server";
 import bcrypt from "bcryptjs";

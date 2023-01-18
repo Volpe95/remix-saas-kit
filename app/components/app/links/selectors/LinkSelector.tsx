@@ -4,7 +4,6 @@ import { forwardRef, Fragment, KeyboardEvent, Ref, useEffect, useImperativeHandl
 import tinyEventBus from "~/plugins/tinyEventBus";
 import { useOuterClick } from "~/utils/shared/KeypressUtils";
 import { useAppData } from "~/utils/data/useAppData";
-import { useTransition } from "remix";
 import { LinkWithWorkspacesAndMembers } from "~/utils/db/links.db.server";
 
 export interface RefLinkSelector {

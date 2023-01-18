@@ -1,5 +1,3 @@
-import { LoaderFunction, MetaFunction, useCatch } from "remix";
-import { json, useLoaderData, Link } from "remix";
 import type { Joke } from "@prisma/client";
 import { db } from "~/utils/db.server";
 

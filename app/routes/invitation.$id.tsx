@@ -6,7 +6,6 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Tenant, TenantUserInvitation, User } from "@prisma/client";
-import { LoaderFunction, json, ActionFunction, useLoaderData, Form, useActionData, MetaFunction } from "remix";
 import { i18n } from "~/locale/i18n.server";
 import { getUserByEmail, register } from "~/utils/db/users.db.server";
 import { sendEmail } from "~/utils/email.server";

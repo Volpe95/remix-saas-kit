@@ -1,7 +1,6 @@
 import EmployeesList from "~/components/app/employees/EmployeesList";
 import ButtonPrimary from "~/components/ui/buttons/ButtonPrimary";
 import { useTranslation } from "react-i18next";
-import { json, LoaderFunction, MetaFunction, useLoaderData, useTransition } from "remix";
 import { Employee } from "@prisma/client";
 import { getUserInfo } from "~/utils/session.server";
 import { getEmployees } from "~/utils/db/app/employees.db.server";

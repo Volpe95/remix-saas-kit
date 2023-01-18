@@ -1,4 +1,3 @@
-import { redirect } from "remix";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { UserType } from "~/application/enums/core/users/UserType";
 import { AppSidebar } from "~/application/sidebar/AppSidebar";

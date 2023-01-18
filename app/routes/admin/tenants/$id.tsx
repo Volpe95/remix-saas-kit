@@ -5,7 +5,6 @@ import Tabs, { TabItem } from "~/components/ui/tabs/Tabs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => ({
   title: "Tenant | Remix SaasFrontend",

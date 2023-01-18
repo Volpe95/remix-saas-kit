@@ -2,7 +2,6 @@ import ButtonPrimary from "./ButtonPrimary";
 import { forwardRef, MouseEventHandler, ReactNode, Ref, useImperativeHandle, useState } from "react";
 import clsx from "clsx";
 import { Transition } from "@remix-run/react/transition";
-import { useTransition } from "remix";
 
 export interface RefLoadingButton {
   start: () => void;

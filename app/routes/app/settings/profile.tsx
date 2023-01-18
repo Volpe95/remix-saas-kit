@@ -12,7 +12,6 @@ import UploadImage from "~/components/ui/uploaders/UploadImage";
 import supportedLocales from "~/locale/supportedLocales";
 import { useNavigate } from "react-router-dom";
 import { useAppData } from "~/utils/data/useAppData";
-import { ActionFunction, Form, json, MetaFunction, redirect, ScrollRestoration, useActionData, useSubmit, useTransition } from "remix";
 import Loading from "~/components/ui/loaders/Loading";
 import { deleteUser, updateUserPassword, updateUserProfile } from "~/utils/db/users.db.server";
 import { getUserInfo } from "~/utils/session.server";

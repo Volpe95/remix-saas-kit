@@ -1,5 +1,3 @@
-import { useTransition } from "remix";
-
 export default function Loading() {
   const transition = useTransition();
   return (

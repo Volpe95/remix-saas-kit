@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { Menu } from "@headlessui/react";
 import Dropdown from "../dropdowns/Dropdown";
 import _supportedLocales from "~/locale/supportedLocales";
-import { useLocation, useSubmit } from "remix";
 import clsx from "clsx";
 
 interface Props {

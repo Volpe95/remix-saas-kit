@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => ({
   title: "Unauthorized | Remix SaasFrontend",

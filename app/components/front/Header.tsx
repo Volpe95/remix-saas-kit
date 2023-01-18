@@ -10,7 +10,6 @@ import clsx from "clsx";
 import { Theme } from "~/application/enums/shared/Theme";
 import Icon from "./Icon";
 import LocaleSelector from "../ui/selectors/LocaleSelector";
-import { useLoaderData } from "remix";
 
 export default function Header() {
   const data = useLoaderData();

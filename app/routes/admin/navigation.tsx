@@ -5,7 +5,6 @@ import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole"
 import { AdminSidebar } from "~/application/sidebar/AdminSidebar";
 import { AppSidebar } from "~/application/sidebar/AppSidebar";
 import SidebarIcon from "~/components/layouts/icons/SidebarIcon";
-import { MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => ({
   title: "Navigation | Remix SaasFrontend",

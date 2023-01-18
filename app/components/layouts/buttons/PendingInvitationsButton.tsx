@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import clsx from "~/utils/shared/ClassesUtils";
-import { Link } from "remix";
 import { useAppData } from "~/utils/data/useAppData";
 
 export default function PendingInvitationsButton() {
