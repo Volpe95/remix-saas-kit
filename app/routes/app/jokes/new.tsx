@@ -1,4 +1,4 @@
-import { redirect } from "remix";
+import { redirect } from "@remix-run/node";
 import { JokeDisplay } from "~/components/joke";
 import { db } from "~/utils/db.server";
 import { getUserInfo, requireUserId } from "~/utils/session.server";

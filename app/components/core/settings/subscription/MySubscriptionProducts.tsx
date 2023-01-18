@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import clsx from "~/utils/shared/ClassesUtils";
 import { useAppData } from "~/utils/data/useAppData";
 import { DashboardLoaderData } from "~/utils/data/useDashboardData";
-import clsx from "clsx";
 
 interface Props {
   className?: string;
