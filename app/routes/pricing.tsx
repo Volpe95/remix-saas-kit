@@ -4,7 +4,6 @@ import Footer from "~/components/front/Footer";
 import { useTranslation } from "react-i18next";
 import { getAllSubscriptionProducts } from "~/utils/db/subscriptionProducts.db.server";
 import i18next from "~/locale/i18n.server";
-import { Language } from "remix-i18next";
 import { SubscriptionProductDto } from "~/application/dtos/core/subscriptions/SubscriptionProductDto";
 import plans from "~/application/pricing/plans.server";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
@@ -15,13 +14,13 @@ export const meta: MetaFunction = () => ({
 });
 
 type LoaderData = {
-  i18next: Record<string, Language>;
+  i18next: Record<string, any>;
   items: SubscriptionProductDto[];
 };
 export let loader: LoaderFunction = async ({ request }) => {
   const items = await getAllSubscriptionProducts();
   const data: LoaderData = {
-    i18next: await i18next.getTranslations(request, ["translations"]),
+    i18next: await i18next.getFixedT(request, ["translations"]),
     items: items.length > 0 ? items : plans,
   };
   return json(data);

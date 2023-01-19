@@ -10,7 +10,6 @@ import i18next from "~/locale/i18n.server";
 import { getUserByEmail, register } from "~/utils/db/users.db.server";
 import { sendEmail } from "~/utils/email.server";
 import { getUserInvitation, updateUserInvitationPending } from "~/utils/db/tenantUserInvitations.db.server";
-import { Language } from "remix-i18next";
 import { createTenantUser } from "~/utils/db/tenants.db.server";
 import { createWorkspaceUser } from "~/utils/db/workspaces.db.server";
 import { createUserSession, getUserInfo, setLoggedUser } from "~/utils/session.server";
@@ -22,7 +21,7 @@ export const meta: MetaFunction = () => ({
 });
 
 type LoaderData = {
-  i18n: Record<string, Language>;
+  i18next: Record<string, any>;
   invitation: (TenantUserInvitation & { tenant: Tenant }) | null;
   existingUser: User | null;
 };
@@ -30,7 +29,7 @@ export let loader: LoaderFunction = async ({ request, params }) => {
   const invitation = await getUserInvitation(params.id ?? "");
   const existingUser = await getUserByEmail(invitation?.email);
   const data: LoaderData = {
-    i18next: await i18next.getTranslations(request, ["translations"]),
+    i18next: await i18next.getFixedT(request, ["translations"]),
     invitation,
     existingUser,
   };

@@ -3,7 +3,6 @@ import Footer from "~/components/front/Footer";
 import Hero from "~/components/front/Hero";
 import JoinNow from "~/components/front/JoinNow";
 import i18next from "~/locale/i18n.server";
-import { RemixI18Next } from "remix-i18next";
 import { getUserInfo } from "~/utils/session.server";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useCatch } from "@remix-run/react";
@@ -15,7 +14,7 @@ export const meta: MetaFunction = () => ({
 
 type LoaderData = {
   authenticated: boolean;
-  i18next: Record<string, RemixI18Next>;
+  i18next: Record<string, any>;
 };
 
 export let loader: LoaderFunction = async ({ request }) => {

@@ -13,7 +13,7 @@ import { useMatches } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 export type AppLoaderData = {
-  i18next: Record<string, Locale>;
+  i18next: Record<string, any>;
   user: Awaited<ReturnType<typeof getUser>>;
   myTenants: Awaited<ReturnType<typeof getMyTenants>>;
   currentTenant: Awaited<ReturnType<typeof getTenant>>;
