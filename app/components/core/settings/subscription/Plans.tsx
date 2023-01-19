@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import WarningBanner from "~/components/ui/banners/WarningBanner";
-import { useSubmit, useTransition } from "@remix-run/react";
+import { useTransition } from "@remix-run/react";
 import { SubscriptionProductDto } from "~/application/dtos/core/subscriptions/SubscriptionProductDto";
 import { SubscriptionPriceDto } from "~/application/dtos/core/subscriptions/SubscriptionPriceDto";
 

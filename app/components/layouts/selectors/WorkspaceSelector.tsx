@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useOuterClick } from "~/utils/shared/KeypressUtils";
 import { getMyWorkspaces, getWorkspace } from "~/utils/db/workspaces.db.server";
 import { Workspace, WorkspaceUser } from "@prisma/client";
+import { useLoaderData, useLocation, useSubmit } from "@remix-run/react";
 
 interface Props {
   className?: string;
@@ -66,7 +67,7 @@ export default function WorkspaceSelector({ className, onAdd, onSelected }: Prop
   function keyUp(event: any) {
     if (event.keyCode == 13) {
       if (sortedItems().length === 1) {
-        change(sortedItems()[0]);
+        change(sortedItems()[0] as any);
       }
     }
   }
@@ -160,7 +161,7 @@ export default function WorkspaceSelector({ className, onAdd, onSelected }: Prop
               <input
                 id="search"
                 ref={inputSearch}
-                placeholder={t("shared.searchDot")}
+                placeholder={t<string>("shared.searchDot")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 autoComplete="none"
@@ -176,7 +177,7 @@ export default function WorkspaceSelector({ className, onAdd, onSelected }: Prop
                     role="option"
                     title={userWorkspace.workspace.name}
                     className="text-left w-full text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-5 hover:bg-gray-100 border-gray-100 font-medium truncate focus:outline-none"
-                    onClick={() => change(userWorkspace)}
+                    onClick={() => change(userWorkspace as any)}
                   >
                     {userWorkspace.workspace.name}
                   </button>
