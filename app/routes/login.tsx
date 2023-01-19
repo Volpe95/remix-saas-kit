@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 
 export let loader: LoaderFunction = async ({ request }) => {
   return json({
-    i18next: await i18next.getTranslations(request, ["translations"]),
+    i18next: await i18next.getFixedT(request, ["translations"]),
   });
 };
 

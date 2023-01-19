@@ -1,4 +1,3 @@
-import { Language } from "remix-i18next";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { createUserSession, getUserInfo } from "../session.server";
 import { getMyTenants, getTenant } from "../db/tenants.db.server";
@@ -14,7 +13,7 @@ import { useMatches } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 export type AppLoaderData = {
-  i18n: Record<string, Language>;
+  i18next: Record<string, Locale>;
   user: Awaited<ReturnType<typeof getUser>>;
   myTenants: Awaited<ReturnType<typeof getMyTenants>>;
   currentTenant: Awaited<ReturnType<typeof getTenant>>;
@@ -69,7 +68,7 @@ export async function loadAppData(request: Request) {
 
   const pendingInvitations = await getLinksCount(userInfo.currentWorkspaceId, [LinkStatus.PENDING]);
   const data: AppLoaderData = {
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getFixedT(request, ["translations"]),
     user,
     myTenants,
     currentTenant,
