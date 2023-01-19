@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Transition } from "@headlessui/react";
 import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import { Form, useTransition} from "@remix-run/react";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import ConfirmModal, { RefConfirmModal } from "~/components/ui/modals/ConfirmModal";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
@@ -10,11 +11,13 @@ import { useEscapeKeypress } from "~/utils/shared/KeypressUtils";
 import SelectWorkspaces, { RefSelectWorkspaces } from "~/components/core/workspaces/SelectWorkspaces";
 import { TenantUser, User, Workspace, WorkspaceUser } from "@prisma/client";
 import { deleteTenantUser, getTenantMember, getTenantUser, getTenantUsers, updateTenantUser } from "~/utils/db/tenants.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserWorkspaces, getWorkspace, getWorkspaces, updateUsersWorkspaces } from "~/utils/db/workspaces.db.server";
 import { getUserInfo } from "~/utils/session.server";
 import clsx from "clsx";
 import { useAppData } from "~/utils/data/useAppData";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Edit member | Remix SaasFrontend",
@@ -57,12 +60,12 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 const unauthorized = (data: ActionData) => json(data, { status: 401 });
 export const action: ActionFunction = async ({ request, params }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const { id } = params;
   if (!id) {
     return badRequest({
-      error: t("shared.notFound"),
+      error: t<string>("shared.notFound"),
     });
   }
   const userInfo = await getUserInfo(request);
@@ -78,21 +81,21 @@ export const action: ActionFunction = async ({ request, params }) => {
   const owners = tenantUsers?.filter((f) => f.role === TenantUserRole.OWNER);
   if (owners?.length === 1 && owners?.find((f) => f.user.email === email) && role !== TenantUserRole.OWNER) {
     return badRequest({
-      error: t("api.errors.cannotBeWithoutOwner"),
+      error: t<string>("api.errors.cannotBeWithoutOwner"),
     });
   }
 
   if (type === "edit") {
     if (workspaces.length === 0) {
       return badRequest({
-        error: t("account.tenant.members.errors.atLeastOneWorkspace"),
+        error: t<string>("account.tenant.members.errors.atLeastOneWorkspace"),
       });
     }
 
     const tenantUser = await getTenantUser(id);
     if (!tenantUser) {
       return badRequest({
-        error: t("shared.notFound"),
+        error: t<string>("shared.notFound"),
       });
     }
     await updateTenantUser(id, { role });
@@ -107,7 +110,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const currentTenantUser = await getTenantMember(userInfo?.userId, userInfo?.currentTenantId);
     if (currentTenantUser?.role !== TenantUserRole.OWNER && currentTenantUser?.role !== TenantUserRole.ADMIN) {
       return unauthorized({
-        error: t("account.tenant.onlyAdmin"),
+        error: t<string>("account.tenant.onlyAdmin"),
       });
     }
     try {
@@ -177,7 +180,7 @@ export default function EditMemberRoute({ maxSize = "sm:max-w-lg" }: Props) {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 
@@ -192,16 +195,16 @@ export default function EditMemberRoute({ maxSize = "sm:max-w-lg" }: Props) {
   function save(e: FormEvent) {
     e.preventDefault();
     if (workspaces.length === 0) {
-      errorModal.current?.show(t("shared.error"), t("account.tenant.members.errors.atLeastOneWorkspace"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("account.tenant.members.errors.atLeastOneWorkspace"));
       return;
     }
   }
   function remove() {
-    confirmRemove.current?.show(t("shared.confirmDelete"), t("shared.delete"), t("shared.cancel"));
+    confirmRemove.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t("shared.cancel"));
   }
   function yesRemove() {
     if (appData.currentRole === TenantUserRole.MEMBER || appData.currentRole === TenantUserRole.GUEST) {
-      errorModal.current?.show(t("account.tenant.onlyAdmin"));
+      errorModal.current?.show(t<string>("account.tenant.onlyAdmin"));
     } else {
       const form = new FormData();
       form.set("type", "delete");

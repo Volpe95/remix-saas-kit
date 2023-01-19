@@ -1,9 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useTransition } from "@remix-run/react";
 import Loading from "~/components/ui/loaders/Loading";
 import ProvidersListAndTable from "~/components/app/links/providers/ProvidersListAndTable";
 import { getProviderLinks, LinkWithWorkspacesAndContracts } from "~/utils/db/links.db.server";
 import { getUserInfo } from "~/utils/session.server";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Providers | Remix SaasFrontend",
@@ -62,14 +65,14 @@ export default function ProvidersRoute() {
                         name="buscador"
                         id="buscador"
                         className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                        placeholder={t("shared.searchDot")}
+                        placeholder={t<string>("shared.searchDot")}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
-                <ProvidersListAndTable items={filteredItems()} />
+                <ProvidersListAndTable items={filteredItems() as any} />
               </div>
             </div>
           );

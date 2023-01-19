@@ -156,7 +156,7 @@ const SelectEmployees = ({ items, onSelected, onClosed, maxSize = "sm:max-w-lg" 
                           name="search"
                           id="search"
                           className="shadow-sm focus:ring-theme-500 focus:border-theme-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                          placeholder={t("shared.searchDot")}
+                          placeholder={t<string>("shared.searchDot")}
                         />
                       </form>
                     </div>
@@ -171,8 +171,8 @@ const SelectEmployees = ({ items, onSelected, onClosed, maxSize = "sm:max-w-lg" 
                                 className="bg-white"
                                 to="/app/employees/new"
                                 captions={{
-                                  new: t("shared.add"),
-                                  thereAreNo: t("app.employees.errors.notDefined"),
+                                  new: t<string>("shared.add"),
+                                  thereAreNo: t<string>("app.employees.errors.notDefined"),
                                 }}
                                 icon="plus"
                               />

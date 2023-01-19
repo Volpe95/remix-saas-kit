@@ -44,8 +44,8 @@ export default function WorkspacesListAndTable({ items }: Props) {
                 className="bg-white"
                 to="/app/settings/workspaces/new"
                 captions={{
-                  new: t("shared.add"),
-                  thereAreNo: t("app.workspaces.errors.noWorkspaces"),
+                  new: t<string>("shared.add"),
+                  thereAreNo: t<string>("app.workspaces.errors.noWorkspaces"),
                 }}
                 icon="plus"
               />

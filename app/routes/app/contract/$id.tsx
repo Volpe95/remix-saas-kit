@@ -3,13 +3,15 @@ import { useTranslation } from "react-i18next";
 import Breadcrumb from "~/components/ui/breadcrumbs/Breadcrumb";
 import ContractDetails from "~/components/app/contracts/ContractDetails";
 import { ContractWithDetails, deleteContract, getContract, updateContract } from "~/utils/db/contracts.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserInfo } from "~/utils/session.server";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import { useRef, useEffect } from "react";
 import { loadAppData } from "~/utils/data/useAppData";
 import { sendEmail } from "~/utils/email.server";
 import { sendContract } from "~/utils/app/ContractUtils";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Contract | Remix SaasFrontend",
@@ -32,11 +34,11 @@ type ActionData = {
 };
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
   const userInfo = await getUserInfo(request);
   
   if (!params.id) {
-    return badRequest({ error: t("shared.notFound") });
+    return badRequest({ error: t<string>("shared.notFound") });
   }
   const form = await request.formData();
 
@@ -65,7 +67,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (type === "delete") {
     const existing = await getContract(params.id);
     if (!existing) {
-      return badRequest({ error: t("shared.notFound") });
+      return badRequest({ error: t<string>("shared.notFound") });
     }
     await deleteContract(params.id);
 
@@ -73,7 +75,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (type === "send") {
     const contract = await getContract(params.id);
     if (!contract) {
-      return badRequest({ error: t("shared.notFound") });
+      return badRequest({ error: t<string>("shared.notFound") });
     }
 
     sendContract(request, contract)
@@ -81,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     return json({success: "Contract sent"});
   }
 
-  return badRequest({ error: t("shared.invalidForm") });
+  return badRequest({ error: t<string>("shared.invalidForm") });
 };
 
 export default function ContractRoute() {

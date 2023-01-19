@@ -5,6 +5,7 @@ import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole"
 import { AdminSidebar } from "~/application/sidebar/AdminSidebar";
 import { AppSidebar } from "~/application/sidebar/AppSidebar";
 import SidebarIcon from "~/components/layouts/icons/SidebarIcon";
+import { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => ({
   title: "Navigation | Remix SaasFrontend",
@@ -69,7 +70,7 @@ export default function AdminNavigationRoute() {
                   name="buscador"
                   id="buscador"
                   className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                  placeholder={t("shared.searchDot")}
+                  placeholder={t<string>("shared.searchDot")}
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                 />

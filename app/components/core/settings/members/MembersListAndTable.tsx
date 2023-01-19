@@ -72,8 +72,8 @@ export default function MembersListAndTable({ items }: Props) {
                 className="bg-white"
                 to="/app/settings/members/new"
                 captions={{
-                  new: t("shared.add"),
-                  thereAreNo: t("app.workspaces.errors.noUsers"),
+                  new: t<string>("shared.add"),
+                  thereAreNo: t<string>("app.workspaces.errors.noUsers"),
                 }}
                 icon="plus"
               />

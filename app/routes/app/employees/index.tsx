@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Employee } from "@prisma/client";
 import { getUserInfo } from "~/utils/session.server";
 import { getEmployees } from "~/utils/db/app/employees.db.server";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData, useTransition } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Employees | Remix SaasFrontend",
@@ -44,7 +46,7 @@ export default function EmployeesRoute() {
         </div>
       </div>
       <div className="py-4 space-y-2 mx-auto max-w-5xl xl:max-w-7xl px-4 sm:px-6 lg:px-8">
-        <EmployeesList items={data.items} />
+        <EmployeesList items={data.items as any} />
       </div>
     </div>
   );

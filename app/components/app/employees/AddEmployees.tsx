@@ -10,6 +10,7 @@ import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessMod
 import UploadDocument from "~/components/ui/uploaders/UploadDocument";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { updateItemByIdx } from "~/utils/shared/ObjectUtils";
+import { useSubmit } from "@remix-run/react";
 
 export default function AddEmployees() {
   const { t } = useTranslation("translations");
@@ -47,7 +48,7 @@ export default function AddEmployees() {
   }
   function save(e: FormEvent) {
     e.preventDefault();
-    confirmCreate.current?.show(t("shared.confirmSave"), t("shared.confirm"), t("shared.back"));
+    confirmCreate.current?.show(t("shared.confirmSave"), t<string>("shared.confirm"), t<string>("shared.back"));
   }
   function cancel() {
     navigate("/app/employees");
@@ -191,7 +192,7 @@ export default function AddEmployees() {
                       <div className="mt-1">
                         <UploadDocument
                           accept=".csv"
-                          description={t("app.employees.actions.onlyCsv")}
+                          description={t<string>("app.employees.actions.onlyCsv")}
                           onDroppedFiles={droppedEmployeesFile}
                           icon={<IconEmployees className="mx-auto h-10 w-10 text-gray-400" />}
                         />

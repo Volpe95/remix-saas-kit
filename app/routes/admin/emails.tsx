@@ -3,14 +3,17 @@ import ButtonSecondary from "~/components/ui/buttons/ButtonSecondary";
 import EmptyState from "~/components/ui/emptyState/EmptyState";
 import clsx from "~/utils/shared/ClassesUtils";
 import { useEffect, useRef, useState } from "react";
+import { useTransition } from "@remix-run/react"
 import { useTranslation } from "react-i18next";
 import { createPostmarkTemplate, getPostmarkTemplates, sendEmail } from "~/utils/email.server";
 import emailTemplates from "~/application/emails/emailTemplates.server";
 import { useAppData } from "~/utils/data/useAppData";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
-import { i18n } from "~/locale/i18n.server";
 import Loading from "~/components/ui/loaders/Loading";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { Form, useActionData, useCatch, useLoaderData, useSubmit } from "@remix-run/react";
+import i18next from "i18next";
 
 export const meta: MetaFunction = () => ({
   title: "Emails | Remix SaasFrontend",
@@ -46,7 +49,7 @@ type ActionData = {
 const success = (data: ActionData) => json(data, { status: 200 });
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = i18next.getFixedT("translations");
 
   const form = await request.formData();
   const type = form.get("type")?.toString();
@@ -89,7 +92,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
   return badRequest({
-    error: t("shared.invalidForm"),
+    error: t<string>("shared.invalidForm"),
   });
 };
 
@@ -99,7 +102,7 @@ export default function EmailsRoute() {
   const actionData = useActionData<ActionData>();
   const { t } = useTranslation("translations");
   const submit = useSubmit();
-  const transition = useTransition();
+  const transition =  useTransition();
   const loading = transition.state === "submitting" || transition.state === "loading";
 
   const errorModal = useRef<RefErrorModal>(null);
@@ -129,7 +132,7 @@ export default function EmailsRoute() {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 
@@ -183,8 +186,8 @@ export default function EmailsRoute() {
                 <EmptyState
                   className="bg-white"
                   captions={{
-                    thereAreNo: t("admin.emails.noEmails"),
-                    description: t("admin.emails.noEmailsDescription"),
+                    thereAreNo: t<string>("admin.emails.noEmails"),
+                    description: t<string>("admin.emails.noEmailsDescription"),
                   }}
                 />
               );

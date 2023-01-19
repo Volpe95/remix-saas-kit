@@ -16,6 +16,7 @@ import DateUtils from "~/utils/shared/DateUtils";
 import { LinkWithWorkspaces, LinkWithWorkspacesAndContracts, LinkWithWorkspacesAndMembers } from "~/utils/db/links.db.server";
 import { useAppData } from "~/utils/data/useAppData";
 import { Workspace } from "@prisma/client";
+import { useSubmit } from "@remix-run/react";
 
 interface Props {
   item: LinkWithWorkspacesAndContracts;
@@ -51,7 +52,7 @@ export default function LinkProfile({ item }: Props) {
   // }
   function deleteLink() {
     closeOptions();
-    confirmDelete.current?.show(t("shared.confirmDelete"), t("shared.delete"), t("shared.cancel"), t("shared.warningCannotUndo"));
+    confirmDelete.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t("shared.cancel"), t("shared.warningCannotUndo"));
   }
   function confirmedDelete() {
     const form = new FormData();

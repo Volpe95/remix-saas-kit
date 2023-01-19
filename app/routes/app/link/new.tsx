@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Breadcrumb from "~/components/ui/breadcrumbs/Breadcrumb";
 import { createLink, getLinksCount } from "~/utils/db/links.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserInfo } from "~/utils/session.server";
 import NewLink from "~/components/app/links/pending/NewLink";
 import { getUserByEmail } from "~/utils/db/users.db.server";
@@ -12,6 +12,8 @@ import { getTenantMember } from "~/utils/db/tenants.db.server";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { sendEmail } from "~/utils/email.server";
 import { loadAppData } from "~/utils/data/useAppData";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "New link | Remix SaasFrontend",
@@ -36,7 +38,7 @@ export type NewLinkActionData = {
 };
 const badRequest = (data: NewLinkActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const userInfo = await getUserInfo(request);
   const appData = await loadAppData(request);
@@ -46,30 +48,30 @@ export const action: ActionFunction = async ({ request }) => {
   const workspaceName = form.get("workspace-name")?.toString() ?? "";
   const inviteeIsProvider = Boolean(form.get("invitee-is-provider"));
   if (!email || !workspaceName) {
-    return badRequest({ error: t("shared.missingFields") });
+    return badRequest({ error: t<string>("shared.missingFields") });
   }
 
   const user = await getUserByEmail(email);
   if (!user) {
-    return badRequest({ error: t("api.errors.userNotRegistered") });
+    return badRequest({ error: t<string>("api.errors.userNotRegistered") });
   }
   if (user.id === userInfo.userId) {
-    return badRequest({ error: t("app.links.invitation.cannotInviteSelf") });
+    return badRequest({ error: t<string>("app.links.invitation.cannotInviteSelf") });
   }
 
   const workspaces = await getUserWorkspacesByUserId(user.id);
   const workspaceMember = workspaces.find((f) => f.workspace.name === workspaceName);
   if (!workspaceMember) {
     return badRequest({
-      error: t("app.links.invitation.notFound", [email, workspaceName]),
+      error: t<string>("app.links.invitation.notFound", [email, workspaceName]),
     });
   }
   if (workspaceMember.workspace.tenantId === userInfo.currentTenantId) {
-    return badRequest({ error: t("app.links.invitation.cannotInviteCurrentTenant") });
+    return badRequest({ error: t<string>("app.links.invitation.cannotInviteCurrentTenant") });
   }
   const tenantMember = await getTenantMember(user.id, workspaceMember.workspace.tenantId);
   if (!tenantMember || (tenantMember.role !== TenantUserRole.OWNER && tenantMember.role !== TenantUserRole.ADMIN)) {
-    return badRequest({ error: t("app.links.invitation.inviteOwnersOrAdmins") });
+    return badRequest({ error: t<string>("app.links.invitation.inviteOwnersOrAdmins") });
   }
 
   const link = await createLink({
@@ -97,7 +99,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const data: NewLinkActionData = {
     link,
-    success: t("app.links.pending.invitationSentDescription", [email]),
+    success: t<string>("app.links.pending.invitationSentDescription", [email]),
   };
   return json(data);
 };

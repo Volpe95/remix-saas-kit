@@ -7,10 +7,12 @@ import UserUtils from "~/utils/store/UserUtils";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserByEmail, updateUserPassword } from "~/utils/db/users.db.server";
 import bcrypt from "bcryptjs";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Reset | Remix SaasFrontend",
@@ -18,7 +20,7 @@ export const meta: MetaFunction = () => ({
 
 export let loader: LoaderFunction = async ({ request }) => {
   return json({
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getTranslations(request, ["translations"]),
   });
 };
 
@@ -33,7 +35,7 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 const success = (data: ActionData) => json(data, { status: 200 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const form = await request.formData();
   const email = form.get("email")?.toString() ?? "";
@@ -62,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await getUserByEmail(email);
   if (!user) {
     return badRequest({
-      error: t("api.errors.userNotRegistered"),
+      error: t<string>("api.errors.userNotRegistered"),
       fields,
     });
   }

@@ -3,6 +3,8 @@ import type { Joke } from "@prisma/client";
 import { db } from "~/utils/db.server";
 import { getUserInfo, requireUserId } from "~/utils/session.server";
 import { JokeDisplay } from "~/components/joke";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useCatch, useLoaderData, useParams } from "@remix-run/react";
 
 export const meta: MetaFunction = ({ data }: { data: LoaderData | undefined }) => {
   if (!data) {

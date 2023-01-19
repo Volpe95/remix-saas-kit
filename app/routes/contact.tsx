@@ -3,7 +3,9 @@ import Header from "~/components/front/Header";
 import WarningBanner from "~/components/ui/banners/WarningBanner";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Contact | Remix SaasFrontend",
@@ -11,7 +13,7 @@ export const meta: MetaFunction = () => ({
 
 export let loader: LoaderFunction = async ({ request }) => {
   return json({
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getFixedT(request, ["translations"]),
     actionUrl: process.env.REMIX_INTEGRATIONS_CONTACT_FORMSPREE?.toString() ?? "",
   });
 };

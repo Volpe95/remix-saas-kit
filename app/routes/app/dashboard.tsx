@@ -8,6 +8,8 @@ import { loadDashboardData } from "~/utils/data/useDashboardData";
 import ClientsUsage from "~/components/app/usages/ClientsUsage";
 import EmployeesUsage from "~/components/app/usages/EmployeesUsage";
 import ProvidersUsage from "~/components/app/usages/ProvidersUsage";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useCatch } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Dashboard | Remix SaasFrontend",

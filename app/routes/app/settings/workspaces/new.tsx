@@ -12,9 +12,11 @@ import SelectUsers, { RefSelectUsers } from "~/components/core/users/SelectUsers
 import { TenantUser, User, Workspace, WorkspaceUser } from "@prisma/client";
 import { getUserInfo } from "~/utils/session.server";
 import { getTenantUsers } from "~/utils/db/tenants.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { useAppData } from "~/utils/data/useAppData";
 import { createWorkspace, createWorkspaceUser, getWorkspacesCount } from "~/utils/db/workspaces.db.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "New workspace | Remix SaasFrontend",
@@ -51,7 +53,7 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 const unauthorized = (data: ActionData) => json(data, { status: 401 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
   const userInfo = await getUserInfo(request);
   if (!userInfo?.currentTenantId) {
     return unauthorized({
@@ -74,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (users.length === 0) {
     return badRequest({
-      error: t("account.tenant.workspaces.errors.atLeastOneUser"),
+      error: t<string>("account.tenant.workspaces.errors.atLeastOneUser"),
     });
   }
   const date = registrationDate ? new Date(registrationDate) : undefined;
@@ -127,7 +129,7 @@ export default function NewWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 
@@ -141,7 +143,7 @@ export default function NewWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
   function save(e: FormEvent) {
     e.preventDefault();
     if (users.length === 0) {
-      errorModal.current?.show(t("shared.error"), t("account.tenant.workspaces.errors.atLeastOneUser"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("account.tenant.workspaces.errors.atLeastOneUser"));
       return;
     }
   }

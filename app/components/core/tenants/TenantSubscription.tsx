@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { TenantDto } from "~/application/dtos/core/tenants/TenantDto";
 import { TenantProductDto } from "~/application/dtos/core/tenants/TenantProductDto";
 
@@ -64,10 +64,10 @@ export default function TenantSubscription({ id = "" }: Props) {
   function reload() {
     // closeOptions();
     const promises: any[] = [
-      services.tenants.get(id).then((response) => {
+      services.tenants.get(id).then((response: SetStateAction<TenantDto>) => {
         setItem(response);
       }),
-      services.tenants.adminGetProducts(id).then((response) => {
+      services.tenants.adminGetProducts(id).then((response: SetStateAction<TenantProductDto[]>) => {
         setProducts(response);
       }),
     ];

@@ -55,7 +55,7 @@ export default function EmployeesList({ items }: Props) {
                         name="buscador"
                         id="buscador"
                         className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                        placeholder={t("shared.searchDot")}
+                        placeholder={t<string>("shared.searchDot")}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                       />

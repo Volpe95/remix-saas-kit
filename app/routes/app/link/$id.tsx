@@ -3,9 +3,11 @@ import { useTranslation } from "react-i18next";
 import Breadcrumb from "~/components/ui/breadcrumbs/Breadcrumb";
 import LinkProfile from "~/components/app/links/all/LinkProfile";
 import { deleteLink, getLink, LinkWithWorkspaces, LinkWithWorkspacesAndContracts } from "~/utils/db/links.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { useEffect, useRef } from "react";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Link | Remix SaasFrontend",
@@ -28,10 +30,10 @@ type ActionData = {
 };
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   if (!params.id) {
-    return badRequest({ error: t("shared.notFound") });
+    return badRequest({ error: t<string>("shared.notFound") });
   }
   const form = await request.formData();
   console.log({ form });
@@ -39,7 +41,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   if (type === "delete") {
     const existing = await getLink(params.id);
     if (!existing) {
-      return badRequest({ error: t("shared.notFound") });
+      return badRequest({ error: t<string>("shared.notFound") });
     }
     await deleteLink(params.id);
     return redirect("/app/links/all");

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import { useEffect, useRef, useState } from "react";
+import { Form, useTransition } from "@remix-run/react";
 import ButtonSecondary from "~/components/ui/buttons/ButtonSecondary";
 import plans from "~/application/pricing/plans.server";
 import {
@@ -12,8 +13,10 @@ import {
 import { SubscriptionProductDto } from "~/application/dtos/core/subscriptions/SubscriptionProductDto";
 import { createStripePrice, createStripeProduct } from "~/utils/stripe.server";
 import { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import clsx from "~/utils/shared/ClassesUtils";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Pricing | Remix SaasFrontend",
@@ -50,7 +53,7 @@ type ActionData = {
 const success = (data: ActionData) => json(data, { status: 200 });
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const items = await getAllSubscriptionProducts();
   if (items.length > 0) {
@@ -128,7 +131,7 @@ export default function AdminPricingRoute() {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
     setItems(actionData?.items ?? data.items);
   }, [actionData]);

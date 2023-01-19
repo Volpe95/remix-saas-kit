@@ -30,10 +30,10 @@ export default function PdfViewer({ className, file, onRemoveFile, fileName = ""
   }
 
   const renderPage = useCallback(
-    (pageNum, pdf = pdfRef) => {
+    (pageNum: any, pdf = pdfRef) => {
       if (pdf) {
         setPageCount(pdf.numPages);
-        pdf.getPage(pageNum).then(function (page) {
+        pdf.getPage(pageNum).then(function (page: { getViewport: (arg0: { scale: number; }) => any; render: (arg0: { canvasContext: CanvasRenderingContext2D | null; viewport: any; }) => void; }) {
           const viewport = page.getViewport({ scale: 0.49 });
           const canvas = canvasRef.current;
           if (canvas) {

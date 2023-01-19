@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Transition } from "@headlessui/react";
 import { forwardRef, Fragment, KeyboardEvent, Ref, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useTransition } from "@remix-run/react";
 import tinyEventBus from "~/plugins/tinyEventBus";
 import { useOuterClick } from "~/utils/shared/KeypressUtils";
 import { useAppData } from "~/utils/data/useAppData";
@@ -159,7 +160,7 @@ const LinkSelector = ({ items, className = "", onSelected }: Props, ref: Ref<Ref
                     id="search"
                     autoComplete="off"
                     onKeyDown={trySelect}
-                    placeholder={t("shared.searchDot")}
+                    placeholder={t<string>("shared.searchDot")}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     className="focus:ring-gray-300 focus:border-theme-300 block w-full rounded-none rounded-l-sm pl-10 sm:text-sm border-gray-300 px-3 py-2 bg-white text-sm border focus:outline-none"

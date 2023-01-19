@@ -4,10 +4,12 @@ import Logo from "~/components/front/Logo";
 import LoadingButton, { RefLoadingButton } from "~/components/ui/buttons/LoadingButton";
 import { useTranslation } from "react-i18next";
 import { useRef } from "react";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { deleteUser, getUserByEmail } from "~/utils/db/users.db.server";
 import UserUtils from "~/utils/store/UserUtils";
 import { getMyTenants } from "~/utils/db/tenants.db.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return {
@@ -17,7 +19,7 @@ export const meta: MetaFunction = () => {
 
 export let loader: LoaderFunction = async ({ request }) => {
   return json({
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getTranslations(request, ["translations"]),
   });
 };
 
@@ -35,7 +37,7 @@ type ActionData = {
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
   const userInfo = await getUserInfo(request);
 
   // await new Promise((r) => setTimeout(r, 5000));
@@ -61,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!user) {
     return badRequest({
       fields,
-      error: t("api.errors.userNotRegistered"),
+      error: t<string>("api.errors.userNotRegistered"),
     });
   }
 
@@ -70,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!isCorrectPassword) {
     return badRequest({
       fields,
-      error: t("api.errors.invalidPassword"),
+      error: t<string>("api.errors.invalidPassword"),
     });
   }
 
@@ -127,7 +129,7 @@ export default function LoginRoute() {
                   autoComplete="email"
                   required
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 rounded-t-md focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
-                  placeholder={t("account.shared.email")}
+                  placeholder={t<string>("account.shared.email")}
                   defaultValue={actionData?.fields?.email}
                   aria-invalid={Boolean(actionData?.fieldErrors?.email)}
                   aria-errormessage={actionData?.fieldErrors?.email ? "email-error" : undefined}
@@ -149,7 +151,7 @@ export default function LoginRoute() {
                   autoComplete="current-password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 rounded-b-md focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
-                  placeholder={t("account.shared.password")}
+                  placeholder={t<string>("account.shared.password")}
                   defaultValue={actionData?.fields?.password}
                   aria-invalid={Boolean(actionData?.fieldErrors?.password) || undefined}
                   aria-errormessage={actionData?.fieldErrors?.password ? "password-error" : undefined}

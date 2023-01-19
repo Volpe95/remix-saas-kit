@@ -4,7 +4,7 @@ import { SubscriptionPriceDto } from "~/application/dtos/core/subscriptions/Subs
 import { SubscriptionProductDto } from "~/application/dtos/core/subscriptions/SubscriptionProductDto";
 import { SubscriptionBillingPeriod } from "~/application/enums/core/subscriptions/SubscriptionBillingPeriod";
 import NumberUtils from "~/utils/shared/NumberUtils";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import clsx from "~/utils/shared/ClassesUtils";
 import { TenantProductDto } from "~/application/dtos/core/tenants/TenantProductDto";
 import WarningBanner from "../banners/WarningBanner";
@@ -94,15 +94,15 @@ export default function PlansRadioButtons({ className = "", plansLabel = true, s
       );
     }
   }
-  function selectMonthly(e?) {
+  function selectMonthly(e?: { stopPropagation: () => void; } | undefined) {
     e?.stopPropagation();
     store.dispatch(setBillingPeriod(SubscriptionBillingPeriod.MONTHLY));
   }
-  function selectYearly(e?) {
+  function selectYearly(e?: { stopPropagation: () => void; } | undefined) {
     e?.stopPropagation();
     store.dispatch(setBillingPeriod(SubscriptionBillingPeriod.YEARLY));
   }
-  function toggleBillingPeriod(e?) {
+  function toggleBillingPeriod(e?: { stopPropagation: () => void; }) {
     e?.stopPropagation();
     if (billingPeriod === SubscriptionBillingPeriod.MONTHLY) {
       selectYearly();
@@ -140,8 +140,8 @@ export default function PlansRadioButtons({ className = "", plansLabel = true, s
   function getPriceWithInterval(billingPeriod: SubscriptionBillingPeriod): SubscriptionPriceDto | undefined {
     let price: SubscriptionPriceDto | undefined;
     if (products && products.length > 0) {
-      products.forEach((product) => {
-        const prices = product.prices.find((f) => f.billingPeriod === billingPeriod && f.currency === currency && f.price > 0);
+      products.forEach((product: { prices: any[]; }) => {
+        const prices = product.prices.find((f: { billingPeriod: SubscriptionBillingPeriod; currency: any; price: number; }) => f.billingPeriod === billingPeriod && f.currency === currency && f.price > 0);
         if (prices) {
           price = prices;
         }
@@ -212,7 +212,7 @@ export default function PlansRadioButtons({ className = "", plansLabel = true, s
                     </div>
                   )}
                   {/*Checked: "bg-theme-50 border-theme-200 z-10", Not Checked: "border-gray-200" */}
-                  {products.map((product, index) => {
+                  {products.map((product: SubscriptionProductDto, index: Key | null | undefined) => {
                     return (
                       <label
                         key={index}

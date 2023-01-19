@@ -6,12 +6,15 @@ import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import Loading from "~/components/ui/loaders/Loading";
 import DateUtils from "~/utils/shared/DateUtils";
 import { useRef, useState, useEffect } from "react";
+import { useTransition } from "@remix-run/react";
 import { LinkWithWorkspaces, getLinks, updateLink, getLink } from "~/utils/db/links.db.server";
 import { getUserInfo } from "~/utils/session.server";
 import { LinkStatus } from "~/application/enums/core/links/LinkStatus";
 import { loadAppData, useAppData } from "~/utils/data/useAppData";
 import { sendEmail } from "~/utils/email.server";
 import { getUser } from "~/utils/db/users.db.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Pending | Remix SaasFrontend",
@@ -116,9 +119,9 @@ export default function PendingLinksRoute() {
       modalReject.current.setValue(item);
       modalReject.current.show(
         t("app.links.invitation.confirmReject"),
-        t("shared.reject"),
-        t("shared.back"),
-        t("app.links.invitation.rejectWarning", [whoAmIName, inviterWorkspace(item).name])
+        t<string>("shared.reject"),
+        t<string>("shared.back"),
+        t<string>("app.links.invitation.rejectWarning", [whoAmIName, inviterWorkspace(item).name])
       );
     }
   }
@@ -128,9 +131,9 @@ export default function PendingLinksRoute() {
       modalAccept.current.setValue(item);
       modalAccept.current.show(
         t("app.links.invitation.confirmAccept", [whoAmIName]),
-        t("shared.accept"),
-        t("shared.back"),
-        t("app.links.invitation.acceptWarning", [inviterWorkspace(item).name])
+        t<string>("shared.accept"),
+        t<string>("shared.back"),
+        t<string>("app.links.invitation.acceptWarning", [inviterWorkspace(item).name])
       );
     }
   }
@@ -184,7 +187,7 @@ export default function PendingLinksRoute() {
                       <EmptyState
                         className="bg-white"
                         captions={{
-                          thereAreNo: t("app.links.pending.empty"),
+                          thereAreNo: t<string>("app.links.pending.empty"),
                         }}
                       />
                     </div>
@@ -206,10 +209,10 @@ export default function PendingLinksRoute() {
                                 )}
                                 <div className="flex items-center justify-between space-x-3">
                                   <h3 className="text-gray-900 text-sm font-medium truncate">
-                                    {whoAmI(item) === 0 ? <span>{item.clientWorkspace.name}</span> : <span>{item.providerWorkspace.name}</span>}
+                                    {whoAmI(item as any) === 0 ? <span>{item.clientWorkspace.name}</span> : <span>{item.providerWorkspace.name}</span>}
                                   </h3>
                                   {(() => {
-                                    if (whoAmI(item) !== 0) {
+                                    if (whoAmI(item as any) !== 0) {
                                       return (
                                         <span className="flex-shrink-0 inline-block px-2 py-0.5 text-teal-800 text-sm font-medium bg-teal-100 rounded-sm border-teal-300">
                                           {t("models.provider.object")}
@@ -226,9 +229,9 @@ export default function PendingLinksRoute() {
                                 </div>
                                 <div className="sm:flex sm:items-center sm:space-x-2 sm:justify-between text-gray-500 text-sm">
                                   <p className="truncate">
-                                    {whoAmI(item) === 0 ? <span>{item.clientWorkspace.name}</span> : <span>{item.providerWorkspace.name}</span>}
+                                    {whoAmI(item as any) === 0 ? <span>{item.clientWorkspace.name}</span> : <span>{item.providerWorkspace.name}</span>}
                                   </p>
-                                  {item.createdAt && <p className="font-light text-sm truncate">{dateAgo(item.createdAt)}</p>}
+                                  {item.createdAt && <p className="font-light text-sm truncate">{dateAgo(item.createdAt as any)}</p>}
                                 </div>
                               </div>
                             </div>
@@ -240,7 +243,7 @@ export default function PendingLinksRoute() {
                                       <div className="w-0 flex-1 flex">
                                         <button
                                           type="button"
-                                          onClick={() => reject(item)}
+                                          onClick={() => reject(item as any)}
                                           className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-theme-500 focus:outline-none"
                                         >
                                           <svg
@@ -258,7 +261,7 @@ export default function PendingLinksRoute() {
                                       <div className="-ml-px w-0 flex-1 flex">
                                         <button
                                           type="button"
-                                          onClick={() => accept(item)}
+                                          onClick={() => accept(item as any)}
                                           className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-theme-500 focus:outline-none"
                                         >
                                           <svg
@@ -272,7 +275,7 @@ export default function PendingLinksRoute() {
                                           </svg>
 
                                           {(() => {
-                                            if (whoAmI(item) === 0) {
+                                            if (whoAmI(item as any) === 0) {
                                               return <span className="ml-3">{t("shared.accept")}</span>;
                                             } else {
                                               return <span className="ml-3">{t("shared.accept")}</span>;

@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import AllComponentsList from "~/components/ui/AllComponentsList";
 

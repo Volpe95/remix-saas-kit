@@ -3,6 +3,7 @@ import { Menu } from "@headlessui/react";
 import Dropdown from "../dropdowns/Dropdown";
 import _supportedLocales from "~/locale/supportedLocales";
 import clsx from "clsx";
+import { useLocation, useSubmit } from "@remix-run/react";
 
 interface Props {
   className?: string;

@@ -6,6 +6,7 @@ import { useOuterClick } from "~/utils/shared/KeypressUtils";
 import { useNavigate } from "react-router-dom";
 import { Tenant, TenantUser } from "@prisma/client";
 import { getMyTenants, getTenant, getTenantUser } from "~/utils/db/tenants.db.server";
+import { useLoaderData, useLocation, useSubmit } from "@remix-run/react";
 
 interface Props {
   className?: string;
@@ -157,7 +158,7 @@ export default function TenantSelector({ className, onAdd }: Props) {
               disabled={loading}
               id="search"
               ref={inputSearch}
-              placeholder={t("shared.searchDot")}
+              placeholder={t<string>("shared.searchDot")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               autoComplete="off"

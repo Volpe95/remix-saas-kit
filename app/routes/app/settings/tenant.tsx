@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useAppData } from "~/utils/data/useAppData";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { updateTenant } from "~/utils/db/tenants.db.server";
 import { getUserInfo } from "~/utils/session.server";
+import { ActionFunction, json, MetaFunction } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Tenant | Remix SaasFrontend",
@@ -18,7 +20,7 @@ type ActionData = {
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
   const form = await request.formData();
   const name = form.get("name")?.toString() ?? "";
   if ((name?.length ?? 0) < 2) {
@@ -34,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
   await updateTenant(userInfo?.currentTenantId, { name });
 
   const actionData: ActionData = {
-    success: t("settings.tenant.updated"),
+    success: t<string>("settings.tenant.updated"),
   };
   return json(actionData);
 };

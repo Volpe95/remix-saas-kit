@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { Form, useTransition } from "@remix-run/react";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
 import ConfirmModal, { RefConfirmModal } from "~/components/ui/modals/ConfirmModal";
@@ -18,6 +19,8 @@ import { getUserInfo } from "~/utils/session.server";
 import UploadDocuments from "~/components/ui/uploaders/UploadDocument";
 import { db } from "~/utils/db.server";
 import bcrypt from "bcryptjs";
+import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Profile | Remix SaasFrontend",
@@ -175,9 +178,9 @@ export default function ProfileRoute() {
 
   function deleteAccount() {
     if (appData.user?.type === UserType.Admin) {
-      errorModal.current?.show(t("settings.profile.errors.cannotDeleteAdmin"));
+      errorModal.current?.show(t<string>("settings.profile.errors.cannotDeleteAdmin"));
     } else {
-      confirmModal.current?.show(t("settings.danger.confirmDelete"), t("shared.confirm"), t("shared.cancel"), t("shared.warningCannotUndo"));
+      confirmModal.current?.show(t("settings.danger.confirmDelete"), t<string>("shared.confirm"), t<string>("shared.cancel"), t<string>("shared.warningCannotUndo"));
     }
   }
   function confirmDelete() {

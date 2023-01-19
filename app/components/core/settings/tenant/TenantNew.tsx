@@ -13,6 +13,7 @@ import LoadingButton, { RefLoadingButton } from "~/components/ui/buttons/Loading
 import UserUtils from "~/utils/store/UserUtils";
 import { useNavigate } from "react-router-dom";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
+import { useActionData, useSubmit } from "@remix-run/react";
 
 interface Props {
   onClosed: () => void;
@@ -98,7 +99,7 @@ export default function TenantNew({ onClosed }: Props) {
                                 type="text"
                                 name="name"
                                 id="name"
-                                placeholder={t("models.workspace.name")}
+                                placeholder={t<string>("models.workspace.name")}
                                 required
                                 value={name}
                                 onChange={(e) => {

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Loading from "~/components/ui/loaders/Loading";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import ConfirmModal from "~/components/ui/modals/ConfirmModal";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
@@ -32,7 +32,7 @@ export default function TenantProfile({ id = "" }: Props) {
     setLoading(true);
     services.tenants
       .get(id)
-      .then((response) => {
+      .then((response: SetStateAction<TenantDto>) => {
         setItem(response);
       })
       .finally(() => {
@@ -44,10 +44,11 @@ export default function TenantProfile({ id = "" }: Props) {
     services.tenants
       .adminDelete(id)
       .then(() => {
-        successModalDeleted.current?.show(t("shared.deleted"), t("app.tenants.actions.deleted"));
+        const placeholder=(t<string>("models.workspace.name"))
+        successModalDeleted.current?.show(t<string>("shared.deleted"), t<string>("app.tenants.actions.deleted"));
       })
-      .catch((error) => {
-        errorModal.current?.show(t("shared.error"), t(error));
+      .catch((error: string | string[]) => {
+        errorModal.current?.show(t<string>("shared.error"), t<string>(error));
       })
       .finally(() => {
         setLoading(false);

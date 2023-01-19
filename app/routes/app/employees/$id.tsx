@@ -2,9 +2,11 @@ import { useTranslation } from "react-i18next";
 import { deleteEmployee, EmployeeWithCreatedByUser, getEmployee, updateEmployee } from "~/utils/db/app/employees.db.server";
 import Breadcrumb from "~/components/ui/breadcrumbs/Breadcrumb";
 import EmployeeProfile from "~/components/app/employees/EmployeeProfile";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { useEffect, useRef } from "react";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Employee | Remix SaasFrontend",
@@ -27,10 +29,10 @@ type ActionData = {
 };
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   if (!params.id) {
-    return badRequest({ error: t("shared.notFound") });
+    return badRequest({ error: t<string>("shared.notFound") });
   }
   const form = await request.formData();
 
@@ -57,7 +59,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (type === "delete") {
     const existing = await getEmployee(params.id);
     if (!existing) {
-      return badRequest({ error: t("shared.notFound") });
+      return badRequest({ error: t<string>("shared.notFound") });
     }
     await deleteEmployee(params.id);
     return redirect("/app/employees");

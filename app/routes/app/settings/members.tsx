@@ -12,6 +12,8 @@ import { useAppData } from "~/utils/data/useAppData";
 import { TenantUser } from "@prisma/client";
 import { deleteUserInvitation, getUserInvitation, getUserInvitations } from "~/utils/db/tenantUserInvitations.db.server";
 import MemberInvitationsListAndTable from "~/components/core/settings/members/MemberInvitationsListAndTable";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { Link, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Members | Remix SaasFrontend",
@@ -131,7 +133,7 @@ export default function MembersRoute() {
                     name="buscador"
                     id="buscador"
                     className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                    placeholder={t("shared.searchDot")}
+                    placeholder={t<string>("shared.searchDot")}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                   />
@@ -149,7 +151,7 @@ export default function MembersRoute() {
               </div>
             </div>
             <div>
-              <MembersListAndTable items={sortedItems()} />
+              <MembersListAndTable items={sortedItems() as any} />
 
               {data.pendingInvitations.length > 0 && <MemberInvitationsListAndTable items={data.pendingInvitations} />}
 

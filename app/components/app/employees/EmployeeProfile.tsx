@@ -9,6 +9,7 @@ import { useRef, useState, useEffect, FormEvent } from "react";
 import clsx from "~/utils/shared/ClassesUtils";
 import ButtonSecondary from "~/components/ui/buttons/ButtonSecondary";
 import { EmployeeWithCreatedByUser } from "~/utils/db/app/employees.db.server";
+import { useSubmit } from "@remix-run/react";
 
 interface Props {
   item: EmployeeWithCreatedByUser;
@@ -53,13 +54,13 @@ export default function EmployeeProfile({ item }: Props) {
   function save(e: FormEvent) {
     e.preventDefault();
     if (thereAreNoChanges()) {
-      errorModal.current?.show(t("shared.error"), t("shared.noChanges"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("shared.noChanges"));
     } else {
-      confirmSave.current?.show(t("shared.saveChanges"), t("shared.yes"), t("shared.cancel"));
+      confirmSave.current?.show(t("shared.saveChanges"), t<string>("shared.yes"), t<string>("shared.cancel"));
     }
   }
   function deleteEmployee() {
-    confirmDeleteEmployee.current?.show(t("shared.confirmDelete"), t("shared.yes"), t("shared.cancel"), t("shared.warningCannotUndo"));
+    confirmDeleteEmployee.current?.show(t("shared.confirmDelete"), t<string>("shared.yes"), t<string>("shared.cancel"), t<string>("shared.warningCannotUndo"));
   }
   function successModalDeletedClosed() {
     navigate("/app/employees");

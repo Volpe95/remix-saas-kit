@@ -25,15 +25,15 @@ export default function MySubscriptionPlan() {
 
   function updateSubscription() {
     if (!selectedPrice || !selectedProduct) {
-      errorModal.current?.show(t("shared.error"), t("settings.subscription.errors.selectPlan"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("settings.subscription.errors.selectPlan"));
       return;
     }
     if (selectedPrice.trialDays === 0 && selectedPrice.price > 0 && !subscriptionCard) {
-      errorModal.current?.show(t("settings.tenant.payment.notSet"));
+      errorModal.current?.show(t<string>("settings.tenant.payment.notSet"));
       return;
     }
     if (selectingCurrentTenantProduct(activeTenantProducts)) {
-      errorModal.current?.show(t("settings.subscription.alreadySubscribed"));
+      errorModal.current?.show(t<string>("settings.subscription.alreadySubscribed"));
       return;
     }
 
@@ -56,12 +56,12 @@ export default function MySubscriptionPlan() {
       .then(() => {
         services.subscriptionManager.getCurrentSubscription();
         services.tenants.getFeatures();
-        successModal.current?.show(t("shared.updated"), t("settings.subscription.updated"));
+        successModal.current?.show(t<string>("shared.updated"), t<string>("settings.subscription.updated"));
         tinyEventBus().emitter.emit("updated-plan");
         setEditing(false);
       })
-      .catch((error) => {
-        errorModal.current?.show(t("shared.error"), t(error));
+      .catch((error: any) => {
+        errorModal.current?.show(t<string>("shared.error"), t<string>(error));
       })
       .finally(() => {
         if (loadingButton.current) {
@@ -140,3 +140,7 @@ export default function MySubscriptionPlan() {
     </div>
   );
 }
+function useSelector(arg0: (state: RootState) => SubscriptionCardDto | undefined) {
+  throw new Error("Function not implemented.");
+}
+

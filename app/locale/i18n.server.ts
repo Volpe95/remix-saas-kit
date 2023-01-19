@@ -1,10 +1,26 @@
+import Backend from "i18next-fs-backend";
+import { resolve } from "node:path";
 import { RemixI18Next } from "remix-i18next";
-import { FileSystemBackend } from "remix-i18next";
-// You will need to provide a backend to load your translations, here we use the
-// file system one and tell it where to find the translations.
-let backend = new FileSystemBackend(process.env.REMIX_LOCALES_FOLDER);
+import i18n from "~/i18n";
 
-export let i18n = new RemixI18Next(backend, {
-  fallbackLng: "en", // here configure your default (fallback) language
-  supportedLanguages: ["es", "en"], // here configure your supported languages
+let i18next = new RemixI18Next({
+  detection: {
+    supportedLanguages: i18n.supportedLngs,
+    fallbackLanguage: i18n.fallbackLng,
+  },
+  // This is the configuration for i18next used
+  // when translating messages server-side only
+  i18next: {
+    ...i18n,
+    backend: {
+      loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json"),
+    },
+  },
+  // The backend you want to use to load the translations
+  // Tip: You could pass `resources` to the `i18next` configuration and avoid
+  // a backend here
+  backend: Backend,
 });
+
+export default i18next;
+

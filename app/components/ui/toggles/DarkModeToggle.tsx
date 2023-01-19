@@ -1,3 +1,4 @@
+import { useLocation, useSubmit } from "@remix-run/react";
 import { useEffect } from "react";
 import { useRoutes } from "react-router";
 import { Theme } from "~/application/enums/shared/Theme";

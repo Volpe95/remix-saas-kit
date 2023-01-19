@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Transition } from "@headlessui/react";
-import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import { FormEvent, Fragment, useEffect, useRef, useState, useTransition } from "react";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
@@ -13,12 +13,14 @@ import { useMembersData } from "~/utils/data/useMembersData";
 import { Workspace } from "@prisma/client";
 import { getWorkspaces } from "~/utils/db/workspaces.db.server";
 import { getUserInfo } from "~/utils/session.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { createTenantUser, getTenant, getTenantMember } from "~/utils/db/tenants.db.server";
 import { getUserByEmail } from "~/utils/db/users.db.server";
 import clsx from "clsx";
 import { createUserInvitation } from "~/utils/db/tenantUserInvitations.db.server";
 import { sendEmail } from "~/utils/email.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "New member | Remix SaasFrontend",
@@ -51,7 +53,7 @@ type ActionData = {
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const appData = await loadAppData(request);
 
@@ -65,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (workspaces.length === 0) {
     return badRequest({
-      error: t("account.tenant.members.errors.atLeastOneWorkspace"),
+      error: t<string>("account.tenant.members.errors.atLeastOneWorkspace"),
     });
   }
 
@@ -161,7 +163,7 @@ export default function NewMemberRoute({ maxSize = "sm:max-w-lg" }: Props) {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 

@@ -63,11 +63,11 @@ export default function EmployeesListAndTable({ className = "", canEdit = true, 
       return items;
     }
     return items.slice().sort((x, y) => {
-      if (x[column] && y[column]) {
+      if (x[column as keyof EmployeeDto] && y[column as keyof EmployeeDto]) {
         if (sortDirection === -1) {
-          return (x[column] > y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof EmployeeDto] > y[column as keyof EmployeeDto] ? 1 : -1) ?? 1;
         } else {
-          return (x[column] < y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof EmployeeDto] < y[column as keyof EmployeeDto] ? 1 : -1) ?? 1;
         }
       }
       return 1;
@@ -84,8 +84,8 @@ export default function EmployeesListAndTable({ className = "", canEdit = true, 
                 className="bg-white"
                 to="/app/employees/new"
                 captions={{
-                  new: t("shared.add"),
-                  thereAreNo: t("app.employees.errors.notDefined"),
+                  new: t<string>("shared.add"),
+                  thereAreNo: t<string>("app.employees.errors.notDefined"),
                 }}
                 icon="plus"
               />

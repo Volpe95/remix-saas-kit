@@ -18,8 +18,10 @@ import ContractActivity from "./ContractActivity";
 import { ContractStatus } from "~/application/enums/app/contracts/ContractStatus";
 import { useAppData } from "~/utils/data/useAppData";
 import { Contract, ContractMember } from "@prisma/client";
+import { useTransition } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { ContractWithDetails } from "~/utils/db/contracts.db.server";
+import { Link, useSubmit } from "@remix-run/react";
 
 interface Props {
   item: ContractWithDetails;
@@ -77,7 +79,7 @@ export default function ContractDetails({ item }: Props) {
     }
   }
   function deleteContract() {
-    confirmDelete.current?.show(t("shared.confirmDelete"), t("shared.delete"), t("shared.cancel"), t("shared.warningCannotUndo"));
+    confirmDelete.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t<string>("shared.cancel"), t<string>("shared.warningCannotUndo"));
   }
   function yesDelete() {
     const form = new FormData();
@@ -94,9 +96,9 @@ export default function ContractDetails({ item }: Props) {
   function send() {
     confirmSendContract.current?.show(
       t("shared.send"),
-      t("shared.send"),
-      t("shared.cancel"),
-      t("shared.sendTo", [item?.members.map((f) => (f.user.firstName + " " + f.user.lastName).trim() + " (" + f.user.email + ")").join(", ")])
+      t<string>("shared.send"),
+      t<string>("shared.cancel"),
+      t<string>("shared.sendTo", [item?.members.map((f) => (f.user.firstName + " " + f.user.lastName).trim() + " (" + f.user.email + ")").join(", ")])
     );
   }
   function yesSendContract() {
@@ -111,11 +113,11 @@ export default function ContractDetails({ item }: Props) {
   }
   function save() {
     if (!name) {
-      errorModal.current?.show(t("shared.error"), t("app.contracts.errors.nameRequired"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("app.contracts.errors.nameRequired"));
     } else if (!description) {
-      errorModal.current?.show(t("shared.error"), t("app.contracts.errors.descriptionRequired"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("app.contracts.errors.descriptionRequired"));
     } else if (!contractPdf) {
-      errorModal.current?.show(t("shared.error"), t("app.contracts.errors.fileRequired"));
+      errorModal.current?.show(t<string>("shared.error"), t<string>("app.contracts.errors.fileRequired"));
     } else {
       const form = new FormData();
       form.set("type", "edit");
@@ -343,7 +345,7 @@ export default function ContractDetails({ item }: Props) {
                                   !editing && "bg-gray-100",
                                   editing && "bg-white"
                                 )}
-                                placeholder={t("models.contract.name")}
+                                placeholder={t<string>("models.contract.name")}
                               />
                             </div>
                           </div>
@@ -387,7 +389,7 @@ export default function ContractDetails({ item }: Props) {
                                           return (
                                             <UploadDocument
                                               accept=".pdf"
-                                              description={t("shared.onlyFileTypes", [".PDF"])}
+                                              description={t<string>("shared.onlyFileTypes", [".PDF"])}
                                               onDroppedFiles={droppedContractFile}
                                               icon={<IconContract className="mx-auto h-10 w-10 text-gray-400" />}
                                             />

@@ -1,5 +1,7 @@
 import { db } from "~/utils/db.server";
 import { useAppData } from "~/utils/data/useAppData";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Jokes | Remix SaasFrontend",

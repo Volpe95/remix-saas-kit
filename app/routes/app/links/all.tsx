@@ -1,11 +1,14 @@
 import { useTranslation } from "react-i18next";
 import Loading from "~/components/ui/loaders/Loading";
 import { useEffect, useState } from "react";
+import { useTransition } from "@remix-run/react";
 import { LinkDto } from "~/application/dtos/core/links/LinkDto";
 import AllLinksListAndTable from "../../../components/app/links/all/AllLinksListAndTable";
 import { getLinks, LinkWithWorkspaces } from "~/utils/db/links.db.server";
 import { getUserInfo } from "~/utils/session.server";
 import { LinkStatus } from "~/application/enums/core/links/LinkStatus";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Links | Remix SaasFrontend",
@@ -67,14 +70,14 @@ export default function AllLinksRoute() {
                         name="buscador"
                         id="buscador"
                         className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                        placeholder={t("shared.searchDot")}
+                        placeholder={t<string>("shared.searchDot")}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
-                <AllLinksListAndTable items={filteredItems()} />
+                <AllLinksListAndTable items={filteredItems() as any} />
               </div>
             </div>
           );

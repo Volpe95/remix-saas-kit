@@ -2,7 +2,7 @@ import { Language } from "remix-i18next";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { createUserSession, getUserInfo } from "../session.server";
 import { getMyTenants, getTenant } from "../db/tenants.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getWorkspaceUser, getWorkspace, getMyWorkspaces } from "../db/workspaces.db.server";
 import { getUser } from "../db/users.db.server";
 import { SubscriptionPrice, SubscriptionProduct } from "@prisma/client";
@@ -10,6 +10,8 @@ import { getSubscriptionPriceByStripeId } from "../db/subscriptionProducts.db.se
 import { getStripeSubscription } from "../stripe.server";
 import { getLinksCount } from "../db/links.db.server";
 import { LinkStatus } from "~/application/enums/core/links/LinkStatus";
+import { useMatches } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
 
 export type AppLoaderData = {
   i18n: Record<string, Language>;

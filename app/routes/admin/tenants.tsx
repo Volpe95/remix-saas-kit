@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useTransition } from "@remix-run/react";
 import ButtonSecondary from "~/components/ui/buttons/ButtonSecondary";
 import EmptyState from "~/components/ui/emptyState/EmptyState";
 import { Tenant, TenantUser, User, Workspace } from "@prisma/client";
 import { adminGetAllTenants, TenantWithWorkspacesAndUsers } from "~/utils/db/tenants.db.server";
 import Loading from "~/components/ui/loaders/Loading";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Tenants | Remix SaasFrontend",
@@ -123,7 +126,7 @@ export default function AdminTenantsRoute() {
                     name="buscador"
                     id="buscador"
                     className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                    placeholder={t("shared.searchDot")}
+                    placeholder={t<string>("shared.searchDot")}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                   />
@@ -137,7 +140,7 @@ export default function AdminTenantsRoute() {
                     <EmptyState
                       className="bg-white"
                       captions={{
-                        thereAreNo: t("app.tenants.empty"),
+                        thereAreNo: t<string>("app.tenants.empty"),
                       }}
                     />
                   </div>

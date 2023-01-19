@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Tabs, { TabItem } from "~/components/ui/tabs/Tabs";
+import { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => ({
   title: "Settings | Remix SaasFrontend",

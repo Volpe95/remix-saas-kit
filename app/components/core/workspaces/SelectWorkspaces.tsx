@@ -149,7 +149,7 @@ const SelectWorkspaces = ({ items, maxSize = "sm:max-w-lg", allowSearch, onClose
                             name="search"
                             id="search"
                             className="shadow-sm focus:ring-theme-500 focus:border-theme-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                            placeholder={t("shared.searchDot")}
+                            placeholder={t<string>("shared.searchDot")}
                           />
                         </form>
                       )}
@@ -163,7 +163,7 @@ const SelectWorkspaces = ({ items, maxSize = "sm:max-w-lg", allowSearch, onClose
                               <EmptyState
                                 className="bg-white"
                                 captions={{
-                                  thereAreNo: t("app.workspaces.empty"),
+                                  thereAreNo: t<string>("app.workspaces.empty"),
                                 }}
                               />
                             </div>

@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Tenant, TenantUserInvitation, User } from "@prisma/client";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserByEmail, register } from "~/utils/db/users.db.server";
 import { sendEmail } from "~/utils/email.server";
 import { getUserInvitation, updateUserInvitationPending } from "~/utils/db/tenantUserInvitations.db.server";
@@ -14,6 +14,8 @@ import { Language } from "remix-i18next";
 import { createTenantUser } from "~/utils/db/tenants.db.server";
 import { createWorkspaceUser } from "~/utils/db/workspaces.db.server";
 import { createUserSession, getUserInfo, setLoggedUser } from "~/utils/session.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Invitation | Remix SaasFrontend",
@@ -28,7 +30,7 @@ export let loader: LoaderFunction = async ({ request, params }) => {
   const invitation = await getUserInvitation(params.id ?? "");
   const existingUser = await getUserByEmail(invitation?.email);
   const data: LoaderData = {
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getTranslations(request, ["translations"]),
     invitation,
     existingUser,
   };
@@ -42,7 +44,7 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
   const userInfo = await getUserInfo(request);
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const form = await request.formData();
   const password = form.get("password")?.toString() ?? "";

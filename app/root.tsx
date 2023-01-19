@@ -1,12 +1,34 @@
 import styles from "./styles/app.css";
-import { useSetupTranslations } from "remix-i18next";
+//import { useSetupTranslations } from "remix-i18next";
 import { createUserSession, getUserInfo } from "./utils/session.server";
 import { loadRootData, useRootData } from "./utils/data/useRootData";
 import TopBanner from "./components/ui/banners/TopBanner";
+import { ActionFunction, json, LinksFunction, LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch, useLoaderData } from "@remix-run/react";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+//import { useChangeLanguage } from "remix-i18next";
+import i18next from "~/locale/i18n.server";
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
 };
+
+export function useChangeLanguage(locale: string) {
+  let { i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [locale, i18n]);
+}
+
+export let handle = {
+  i18n: "translations",
+};
+
+export async function loader({ request }: LoaderArgs) {
+  let locale = await i18next.getLocale(request);
+  return json({ locale });
+}
 
 export const meta: MetaFunction = () => {
   const description = `Remix SaaS kit with everything you need to start your SaaS app.`;
@@ -31,8 +53,19 @@ export const meta: MetaFunction = () => {
 
 function Document({ children, title = `Remix SaasFrontend` }: { children: React.ReactNode; title?: string }) {
   const data = useRootData();
+ 
+  // Get the locale from the loader
+  let { locale } = useLoaderData<typeof loader>() as any;
+  let { i18n } = useTranslation();  
+
+  // This hook will change the i18n instance language to the current locale
+  // detected by the loader, this way, when we do something to change the
+  // language, this locale will change and i18next will load the correct
+  // translation files
+  //useChangeLanguage(locale);
+
   return (
-    <html lang={data?.locale} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
+    <html lang={locale} dir={i18n.dir()} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
       <head>
         <meta charSet="utf-8" />
         <Meta />
@@ -59,9 +92,9 @@ function Document({ children, title = `Remix SaasFrontend` }: { children: React.
   );
 }
 
-export let loader: LoaderFunction = async ({ request }) => {
-  return loadRootData(request);
-};
+//export let loader: LoaderFunction = async ({ request }) => {
+//  return loadRootData(request);
+//};
 
 export const action: ActionFunction = async ({ request }) => {
   const userInfo = await getUserInfo(request);
@@ -96,8 +129,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function App() {
-  let { locale } = useLoaderData<{ locale: string }>();
-  useSetupTranslations(locale);
+  
   return (
     <Document>
       <Outlet />

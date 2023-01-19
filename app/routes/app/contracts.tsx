@@ -5,6 +5,8 @@ import Tabs from "~/components/ui/tabs/Tabs";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "~/utils/session.server";
 import { getContracts } from "~/utils/db/contracts.db.server";
+import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Contracts | Remix SaasFrontend",

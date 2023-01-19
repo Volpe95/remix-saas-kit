@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import ConfirmModal, { RefConfirmModal } from "~/components/ui/modals/ConfirmModal";
 import { useEffect, useRef, useState } from "react";
+import { useTransition } from "@remix-run/react";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import SuccessModal, { RefSuccessModal } from "~/components/ui/modals/SuccessModal";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
@@ -10,10 +11,12 @@ import EmptyState from "~/components/ui/emptyState/EmptyState";
 import Loading from "~/components/ui/loaders/Loading";
 import { adminGetAllUsers, deleteUser, getUser, updateUserPassword } from "~/utils/db/users.db.server";
 import { createUserSession, getUserInfo, setLoggedUser } from "~/utils/session.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { Tenant, TenantUser, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { UserType } from "~/application/enums/core/users/UserType";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Users | Remix SaasFrontend",
@@ -44,7 +47,7 @@ const success = (data: ActionData) => json(data, { status: 200 });
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
   const userInfo = await getUserInfo(request);
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const form = await request.formData();
   const type: ActionType = form.get("type")?.toString() as ActionType;
@@ -59,7 +62,7 @@ export const action: ActionFunction = async ({ request }) => {
       const userSession = await setLoggedUser(user);
       if (!userSession) {
         return badRequest({
-          error: t("shared.notFound"),
+          error: t<string>("shared.notFound"),
         });
       }
       return createUserSession(
@@ -81,12 +84,12 @@ export const action: ActionFunction = async ({ request }) => {
       const passwordHash = await bcrypt.hash(passwordNew, 10);
       await updateUserPassword({ passwordHash }, user?.id);
 
-      return success({ success: t("shared.updated") });
+      return success({ success: t<string>("shared.updated") });
     }
     case ActionType.DeleteUser: {
       // TODO: CANCEL TENANTS SUBSCRIPTIONS, DELETE TENANTS, WORKSPACES AND SUBSCRIPTIONS
       await deleteUser(userId);
-      return success({ success: t("shared.deleted") });
+      return success({ success: t<string>("shared.deleted") });
     }
     default: {
       return badRequest({ error: "Form not submitted correctly." });
@@ -154,7 +157,7 @@ export default function AdminUsersRoute() {
   function deleteUser(item: User) {
     if (confirmDelete.current) {
       confirmDelete.current.setValue(item);
-      confirmDelete.current.show(t("shared.delete"), t("shared.delete"), t("shared.cancel"), t("admin.users.deleteWarning"));
+      confirmDelete.current.show(t("shared.delete"), t<string>("shared.delete"), t<string>("shared.cancel"), t<string>("admin.users.deleteWarning"));
     }
   }
   function confirmDeleteUser(item: User) {
@@ -222,7 +225,7 @@ export default function AdminUsersRoute() {
                         name="buscador"
                         id="buscador"
                         className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                        placeholder={t("shared.searchDot")}
+                        placeholder={t<string>("shared.searchDot")}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                       />
@@ -236,7 +239,7 @@ export default function AdminUsersRoute() {
                         <EmptyState
                           className="bg-white"
                           captions={{
-                            thereAreNo: t("app.workspaces.errors.noUsers"),
+                            thereAreNo: t<string>("app.workspaces.errors.noUsers"),
                           }}
                         />
                       </div>

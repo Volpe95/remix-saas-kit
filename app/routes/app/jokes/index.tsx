@@ -1,4 +1,6 @@
 import type { Joke } from "@prisma/client";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Link, useCatch, useLoaderData } from "@remix-run/react";
 import { db } from "~/utils/db.server";
 
 export const meta: MetaFunction = () => ({

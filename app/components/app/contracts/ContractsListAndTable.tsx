@@ -71,11 +71,11 @@ export default function ContractsListAndTable({ items }: Props) {
       return items;
     }
     return items.slice().sort((x, y) => {
-      if (x[column] && y[column]) {
+      if (x[column as keyof Contract] && y[column as keyof Contract]) {
         if (sortDirection === -1) {
-          return (x[column] > y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof Contract] > y[column as keyof Contract] ? 1 : -1) ?? 1;
         } else {
-          return (x[column] < y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof Contract] < y[column as keyof Contract] ? 1 : -1) ?? 1;
         }
       }
       return 1;
@@ -92,8 +92,8 @@ export default function ContractsListAndTable({ items }: Props) {
                 className="bg-white"
                 to="/app/contract/new"
                 captions={{
-                  new: t("shared.add"),
-                  thereAreNo: t("app.contracts.errors.noContracts"),
+                  new: t<string>("shared.add"),
+                  thereAreNo: t<string>("app.contracts.errors.noContracts"),
                 }}
                 icon="plus"
               />

@@ -14,8 +14,10 @@ import SelectUsers, { RefSelectUsers } from "~/components/core/users/SelectUsers
 import { TenantUser, User, Workspace, WorkspaceUser } from "@prisma/client";
 import { getTenantMember, getTenantUsers } from "~/utils/db/tenants.db.server";
 import { getUserInfo } from "~/utils/session.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getWorkspace, updateWorkspace, updateWorkspaceUsers, deleteWorkspace } from "~/utils/db/workspaces.db.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { Form, useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Edit workspace | Remix SaasFrontend",
@@ -56,12 +58,12 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 const unauthorized = (data: ActionData) => json(data, { status: 401 });
 export const action: ActionFunction = async ({ request, params }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const { id } = params;
   if (!id) {
     return badRequest({
-      error: t("shared.notFound"),
+      error: t<string>("shared.notFound"),
     });
   }
   const form = await request.formData();
@@ -81,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
     if (users.length === 0) {
       return badRequest({
-        error: t("account.tenant.workspaces.errors.atLeastOneUser"),
+        error: t<string>("account.tenant.workspaces.errors.atLeastOneUser"),
       });
     }
     const date = registrationDate ? new Date(registrationDate) : undefined;
@@ -102,7 +104,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const currentTenantUser = await getTenantMember(userInfo?.userId, userInfo?.currentTenantId);
     if (currentTenantUser?.role !== TenantUserRole.OWNER && currentTenantUser?.role !== TenantUserRole.ADMIN) {
       return unauthorized({
-        error: t("account.tenant.onlyAdmin"),
+        error: t<string>("account.tenant.onlyAdmin"),
       });
     }
     try {
@@ -148,7 +150,7 @@ export default function EditWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
       errorModal.current?.show(actionData.error);
     }
     if (actionData?.success) {
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 
@@ -166,11 +168,11 @@ export default function EditWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
     navigate("/app/settings/workspaces");
   }
   function remove() {
-    confirmRemove.current?.show(t("shared.confirmDelete"), t("shared.delete"), t("shared.cancel"), t("shared.warningCannotUndo"));
+    confirmRemove.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t<string>("shared.cancel"), t("shared.warningCannotUndo"));
   }
   function yesRemove() {
     if (appData.currentRole == TenantUserRole.MEMBER || appData.currentRole == TenantUserRole.GUEST) {
-      errorModal.current?.show(t("account.tenant.onlyAdmin"));
+      errorModal.current?.show(t<string>("account.tenant.onlyAdmin"));
     } else {
       const form = new FormData();
       form.set("type", "delete");

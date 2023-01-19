@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
+import { Form, useTransition } from "@remix-run/react";
 import ErrorModal, { RefErrorModal } from "~/components/ui/modals/ErrorModal";
 import SelectEmployees, { RefSelectEmployees } from "~/components/app/employees/SelectEmployees";
 import SelectContractMembers, { RefSelectContractMembers } from "~/components/app/contracts/SelectContractMembers";
@@ -19,7 +20,7 @@ import { updateItem } from "~/utils/shared/ObjectUtils";
 import PdfPreview from "~/components/ui/pdf/PdfViewer";
 import { loadAppData, useAppData } from "~/utils/data/useAppData";
 import { getLink, getLinksWithMembers, LinkWithWorkspacesAndMembers } from "~/utils/db/links.db.server";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserInfo } from "~/utils/session.server";
 import { Employee } from "@prisma/client";
 import { createContract, getContract, getMonthlyContractsCount } from "~/utils/db/contracts.db.server";
@@ -28,6 +29,8 @@ import LoadingButton from "~/components/ui/buttons/LoadingButton";
 import { ContractStatus } from "~/application/enums/app/contracts/ContractStatus";
 import { sendEmail } from "~/utils/email.server";
 import { sendContract } from "~/utils/app/ContractUtils";
+import { ActionFunction, json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "New contract | Remix SaasFrontend",
@@ -63,7 +66,7 @@ type ActionData = {
 };
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
 
   const userInfo = await getUserInfo(request);
 
@@ -80,15 +83,15 @@ export const action: ActionFunction = async ({ request }) => {
   });
 
   if (!name) {
-    return badRequest({ error: t("app.contracts.errors.nameRequired") });
+    return badRequest({ error: t<string>("app.contracts.errors.nameRequired") });
   } else if (!description) {
-    return badRequest({ error: t("app.contracts.errors.descriptionRequired") });
+    return badRequest({ error: t<string>("app.contracts.errors.descriptionRequired") });
   } else if (!file) {
-    return badRequest({ error: t("app.contracts.errors.fileRequired") });
+    return badRequest({ error: t<string>("app.contracts.errors.fileRequired") });
   } else if (!linkId) {
-    return badRequest({ error: t("app.contracts.errors.linkRequired") });
+    return badRequest({ error: t<string>("app.contracts.errors.linkRequired") });
   } else if (!members || members.filter((f) => f.role === ContractMemberRole.SIGNATORY).length < 2) {
-    return badRequest({ error: t("app.contracts.errors.atLeastNSignatories") });
+    return badRequest({ error: t<string>("app.contracts.errors.atLeastNSignatories") });
   }
 
   const link = await getLink(linkId);
@@ -158,7 +161,7 @@ export default function NewContractRoute() {
 
   function addMember() {
     if (!link || !link.id) {
-      errorModal.current?.show(t("shared.missingFields"), t("app.contracts.errors.linkRequired"));
+      errorModal.current?.show(t<string>("shared.missingFields"), t<string>("app.contracts.errors.linkRequired"));
     } else {
       selectContractMembers.current?.show(
         link,
@@ -220,7 +223,7 @@ export default function NewContractRoute() {
     if (files.length > 0) {
       const mb = files[0].file.size / 1048576;
       if (mb >= 20) {
-        errorModal.current?.show(t("shared.error"), t("app.contracts.errors.maxFileReached"));
+        errorModal.current?.show(t<string>("shared.error"), t<string>("app.contracts.errors.maxFileReached"));
       } else {
         setContractFile(files[0].base64);
       }
@@ -316,7 +319,7 @@ export default function NewContractRoute() {
                               required
                               value={name}
                               onChange={(e) => setName(e.currentTarget.value)}
-                              placeholder={t("app.contracts.placeholders.name")}
+                              placeholder={t<string>("app.contracts.placeholders.name")}
                               className="w-full flex-1 focus:ring-theme-500 focus:border-theme-500 block min-w-0 rounded-md sm:text-sm border-gray-300"
                             />
                           </div>
@@ -335,7 +338,7 @@ export default function NewContractRoute() {
                               required
                               value={description}
                               onChange={(e) => setDescription(e.currentTarget.value)}
-                              placeholder={t("app.contracts.placeholders.description")}
+                              placeholder={t<string>("app.contracts.placeholders.description")}
                               className="w-full flex-1 focus:ring-theme-500 focus:border-theme-500 block min-w-0 rounded-md sm:text-sm border-gray-300"
                             />
                           </div>
@@ -351,7 +354,7 @@ export default function NewContractRoute() {
                                 return (
                                   <UploadDocument
                                     accept=".pdf"
-                                    description={t("shared.onlyFileTypes", [".PDF"])}
+                                    description={t<string>("shared.onlyFileTypes", [".PDF"])}
                                     onDroppedFiles={droppedContractFile}
                                     icon={<IconContract className="mx-auto h-10 w-10 text-gray-400" />}
                                   />
@@ -403,7 +406,7 @@ export default function NewContractRoute() {
                                     required
                                     type="text"
                                     name="full-name"
-                                    placeholder={t("account.shared.name")}
+                                    placeholder={t<string>("account.shared.name")}
                                     disabled
                                     autoComplete="full-name"
                                     className="bg-gray-100 cursor-not-allowed shadow-sm focus:ring-theme-500 focus:border-theme-500 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -425,7 +428,7 @@ export default function NewContractRoute() {
                                         type="email"
                                         disabled
                                         placeholder={
-                                          member.role === 0 ? t("app.contracts.placeholders.signatoryEmail") : t("app.contracts.placeholders.spectatorEmail")
+                                          member.role === 0 ? t<string>("app.contracts.placeholders.signatoryEmail") : t<string>("app.contracts.placeholders.spectatorEmail")
                                         }
                                         autoComplete="email"
                                         required

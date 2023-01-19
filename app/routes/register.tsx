@@ -2,7 +2,7 @@ import { createUserSession, getUserInfo, setLoggedUser } from "~/utils/session.s
 import Logo from "~/components/front/Logo";
 import LoadingButton from "~/components/ui/buttons/LoadingButton";
 import { useTranslation } from "react-i18next";
-import { i18n } from "~/locale/i18n.server";
+import i18next from "~/locale/i18n.server";
 import { getUserByEmail, register } from "~/utils/db/users.db.server";
 import UserUtils from "~/utils/store/UserUtils";
 import { createStripeCustomer } from "~/utils/stripe.server";
@@ -11,6 +11,8 @@ import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole"
 import { createWorkspace, createWorkspaceUser } from "~/utils/db/workspaces.db.server";
 import { WorkspaceType } from "~/application/enums/core/tenants/WorkspaceType";
 import { sendEmail } from "~/utils/email.server";
+import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return {
@@ -20,7 +22,7 @@ export const meta: MetaFunction = () => {
 
 export let loader: LoaderFunction = async ({ request }) => {
   return json({
-    i18n: await i18n.getTranslations(request, ["translations"]),
+    i18next: await i18next.getTranslations(request, ["translations"]),
   });
 };
 
@@ -41,7 +43,7 @@ type ActionData = {
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
-  let t = await i18n.getFixedT(request, "translations");
+  let t = await i18next.getFixedT(request, "translations");
   const userInfo = await getUserInfo(request);
 
   // await new Promise((r) => setTimeout(r, 5000));
@@ -61,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
     typeof lastName !== "string"
   ) {
     return badRequest({
-      error: t("shared.missingFields"),
+      error: t<string>("shared.missingFields"),
     });
   }
 
@@ -75,7 +77,7 @@ export const action: ActionFunction = async ({ request }) => {
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return badRequest({
-      error: t("api.errors.userAlreadyRegistered"),
+      error: t<string>("api.errors.userAlreadyRegistered"),
     });
   }
 
@@ -165,7 +167,7 @@ export default function RegisterRoute() {
                     type="text"
                     name="company"
                     id="company"
-                    placeholder={t("models.workspace.name")}
+                    placeholder={t<string>("models.workspace.name")}
                     required
                     defaultValue={actionData?.fields?.company}
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
@@ -190,7 +192,7 @@ export default function RegisterRoute() {
                       required
                       defaultValue={actionData?.fields?.firstName}
                       className="appearance-none rounded-none rounded-tl-md relative block w-full px-3 py-2 border border-r-0 border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
-                      placeholder={t("account.register.firstName")}
+                      placeholder={t<string>("account.register.firstName")}
                     />
                   </div>
                   <div className="w-1/2">
@@ -204,7 +206,7 @@ export default function RegisterRoute() {
                       defaultValue={actionData?.fields?.lastName}
                       required
                       className="appearance-none rounded-none rounded-tr-md relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
-                      placeholder={t("account.register.lastName")}
+                      placeholder={t<string>("account.register.lastName")}
                     />
                   </div>
                 </div>
@@ -218,7 +220,7 @@ export default function RegisterRoute() {
                     name="email"
                     autoComplete="email"
                     required
-                    placeholder={t("account.shared.email")}
+                    placeholder={t<string>("account.shared.email")}
                     defaultValue={actionData?.fields?.email}
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
                   />
@@ -228,7 +230,7 @@ export default function RegisterRoute() {
                   id="password"
                   name="password"
                   required
-                  placeholder={t("account.register.password")}
+                  placeholder={t<string>("account.register.password")}
                   className="appearance-none rounded-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:bg-gray-900 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-theme-500 focus:border-theme-500 focus:z-10 sm:text-sm"
                 />
               </div>

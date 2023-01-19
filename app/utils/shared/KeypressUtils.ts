@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
-function useKeypress(callback, keyCode) {
-  const escFunction = useCallback((event) => {
+function useKeypress(callback: () => void, keyCode: number) {
+  const escFunction = useCallback((event: { keyCode: number; }) => {
     if (event.keyCode === keyCode) {
       callback();
     }

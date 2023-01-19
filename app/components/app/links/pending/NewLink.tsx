@@ -8,6 +8,7 @@ import WarningBanner from "~/components/ui/banners/WarningBanner";
 import { Link } from "@prisma/client";
 import { useAppData } from "~/utils/data/useAppData";
 import { NewLinkActionData } from "~/routes/app/link/new";
+import { useActionData, useNavigate, useSubmit } from "@remix-run/react";
 
 interface Props {
   linksCount: number;
@@ -44,7 +45,7 @@ export default function NewLink({ linksCount }: Props) {
     if (actionData?.success) {
       setEmail("");
       setWorkspaceName("");
-      successModal.current?.show(t("shared.success"), actionData.success);
+      successModal.current?.show(t<string>("shared.success"), actionData.success);
     }
   }, [actionData]);
 
@@ -52,9 +53,9 @@ export default function NewLink({ linksCount }: Props) {
     const confirmText = t("shared.invite");
     const inviteText = t("app.links.invitation.invite");
     if (imProvider) {
-      confirmCreateLinkModal.current?.show(t("app.clients.new.add"), confirmText, t("shared.cancel"), inviteText);
+      confirmCreateLinkModal.current?.show(t("app.clients.new.add"), confirmText, t<string>("shared.cancel"), inviteText);
     } else {
-      confirmCreateLinkModal.current?.show(t("app.providers.new.add"), confirmText, t("shared.cancel"), inviteText);
+      confirmCreateLinkModal.current?.show(t("app.providers.new.add"), confirmText, t<string>("shared.cancel"), inviteText);
     }
   }
   function confirmCreateLink() {

@@ -8,6 +8,8 @@ import { getUserInfo } from "~/utils/session.server";
 import { TenantUserRole } from "~/application/enums/core/tenants/TenantUserRole";
 import { getTenantMember } from "~/utils/db/tenants.db.server";
 import { getWorkspaces } from "~/utils/db/workspaces.db.server";
+import { json, LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => ({
   title: "Workspaces | Remix SaasFrontend",
@@ -74,7 +76,7 @@ export default function WorkspacesRoute() {
                             name="buscador"
                             id="buscador"
                             className="w-full focus:ring-theme-500 focus:border-theme-500 block rounded-md pl-10 sm:text-sm border-gray-300"
-                            placeholder={t("shared.searchDot")}
+                            placeholder={t<string>("shared.searchDot")}
                             value={searchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
                           />
@@ -93,7 +95,7 @@ export default function WorkspacesRoute() {
                       </div>
                     </div>
                     <div>
-                      <WorkspacesListAndTable items={filteredItems()} />
+                      <WorkspacesListAndTable items={filteredItems() as any} />
                     </div>
                   </div>
                 </div>

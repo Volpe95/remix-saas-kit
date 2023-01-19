@@ -6,6 +6,7 @@ import EmptyState from "~/components/ui/emptyState/EmptyState";
 import DateUtils from "~/utils/shared/DateUtils";
 import clsx from "~/utils/shared/ClassesUtils";
 import { LinkWithWorkspaces, LinkWithWorkspacesAndContracts } from "~/utils/db/links.db.server";
+import { InvalidPDFException } from "pdfjs-dist";
 
 interface Props {
   items: LinkWithWorkspacesAndContracts[];
@@ -51,11 +52,11 @@ export default function ProvidersListAndTable({ items }: Props) {
       return items;
     }
     return items.slice().sort((x, y) => {
-      if (x[column] && y[column]) {
+      if (x[column as keyof LinkWithWorkspaces] && y[column as keyof LinkWithWorkspaces]) {
         if (sortDirection === -1) {
-          return (x[column] > y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof LinkWithWorkspaces] > y[column as keyof LinkWithWorkspaces] ? 1 : -1) ?? 1;
         } else {
-          return (x[column] < y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof LinkWithWorkspaces] < y[column as keyof LinkWithWorkspaces] ? 1 : -1) ?? 1;
         }
       }
       return 1;
@@ -71,7 +72,7 @@ export default function ProvidersListAndTable({ items }: Props) {
               <EmptyState
                 className="bg-white"
                 captions={{
-                  thereAreNo: t("app.providers.empty"),
+                  thereAreNo: t<string>("app.providers.empty"),
                 }}
               />
             </div>

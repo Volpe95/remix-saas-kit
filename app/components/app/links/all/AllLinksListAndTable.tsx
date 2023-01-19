@@ -62,11 +62,11 @@ export default function AllLinksListAndTable({ items }: Props) {
       return items;
     }
     return items.slice().sort((x, y) => {
-      if (x[column] && y[column]) {
+      if (x[column as keyof LinkWithWorkspaces] && y[column as keyof LinkWithWorkspaces]) {
         if (sortDirection === -1) {
-          return (x[column] > y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof LinkWithWorkspaces] > y[column as keyof LinkWithWorkspaces] ? 1 : -1) ?? 1;
         } else {
-          return (x[column] < y[column] ? 1 : -1) ?? 1;
+          return (x[column as keyof LinkWithWorkspaces] < y[column as keyof LinkWithWorkspaces] ? 1 : -1) ?? 1;
         }
       }
       return 1;
@@ -82,7 +82,7 @@ export default function AllLinksListAndTable({ items }: Props) {
               <EmptyState
                 className="bg-white"
                 captions={{
-                  thereAreNo: t("app.links.empty"),
+                  thereAreNo: t<string>("app.links.empty"),
                 }}
               />
             </div>
