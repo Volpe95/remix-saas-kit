@@ -34,7 +34,7 @@ jobs:
       - name: Deploy with rsync
         run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/remix-saas-kit
       
-      - name: Update both Python dependencies & crontab
+      - name: Build the project and run it using yarn and pm2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
