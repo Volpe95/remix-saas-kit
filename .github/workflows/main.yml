@@ -43,5 +43,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /home/ubuntu/remix-saas-kit
-            echo "Hello" >> hey.txt
+            
+            yarn install 
+
+            pm2 delete sass-remix-kit
+            pm2 start yarn --name sass-remix-kit -- dev
 
