@@ -180,11 +180,11 @@ export default function AdminTenantsRoute() {
                                             <Link to={"/admin/tenant/" + item.id} className="text-sm font-medium text-gray-900 hover:underline">
                                               {item.name}
                                             </Link>
-                                            <div>{getUsers(item)}</div>
+                                            <div>{getUsers(item as any)}</div>
                                           </div>
                                         </td>
                                         <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-600">
-                                          <div className="max-w-sm truncate">{getWorkspaces(item)}</div>
+                                          <div className="max-w-sm truncate">{getWorkspaces(item as any)}</div>
                                         </td>
                                       </tr>
                                     );

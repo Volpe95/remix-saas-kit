@@ -25,10 +25,10 @@ export let handle = {
   i18n: "translations",
 };
 
-export async function loader({ request }: LoaderArgs) {
-  let locale = await i18next.getLocale(request);
-  return json({ locale });
-}
+//export async function loader({ request }: LoaderArgs) {
+//  let locale = await i18next.getLocale(request);
+//  return json({ locale });
+//}
 
 export const meta: MetaFunction = () => {
   const description = `Remix SaaS kit with everything you need to start your SaaS app.`;
@@ -55,17 +55,17 @@ function Document({ children, title = `Remix SaasFrontend` }: { children: React.
   const data = useRootData();
  
   // Get the locale from the loader
-  let { locale } = useLoaderData<typeof loader>() as any;
+  //let { locale } = useLoaderData<typeof loader>() as any;
   let { i18n } = useTranslation();  
 
   // This hook will change the i18n instance language to the current locale
   // detected by the loader, this way, when we do something to change the
   // language, this locale will change and i18next will load the correct
   // translation files
-  //useChangeLanguage(locale);
+  useChangeLanguage(data.locale);
 
   return (
-    <html lang={locale} dir={i18n.dir()} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
+    <html lang={data?.locale} dir={i18n.dir()} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
       <head>
         <meta charSet="utf-8" />
         <Meta />
@@ -92,9 +92,9 @@ function Document({ children, title = `Remix SaasFrontend` }: { children: React.
   );
 }
 
-//export let loader: LoaderFunction = async ({ request }) => {
-//  return loadRootData(request);
-//};
+export let loader: LoaderFunction = async ({ request }) => {
+  return loadRootData(request);
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const userInfo = await getUserInfo(request);
@@ -129,7 +129,10 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function App() {
-  
+
+  let { locale } = useLoaderData<{ locale: string }>();
+  //useSetupTranslations(locale);
+
   return (
     <Document>
       <Outlet />
