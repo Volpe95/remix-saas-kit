@@ -7,7 +7,7 @@ import { EmailTemplateDto } from "~/application/dtos/core/email/EmailTemplateDto
 // Send an email:
 var client = new postmark.ServerClient(process.env.REMIX_POSTMARK_SERVER_TOKEN?.toString() ?? "");
 var from = "Remix SaasFrontend";
-var fromEmail = "remix@saasfrontends.com";
+var fromEmail = "dave@gridworkz.com";
 
 export async function sendPlainEmail(to: string, subject: string, textBody: string) {
   client.sendEmail({
@@ -24,7 +24,7 @@ function getBaseTemplateModel() {
     product_url: appUrl,
     login_url: appUrl + "/login",
     product_name: "Remix SaasFrontend",
-    support_email: "saasfrontends@gmail.com",
+    support_email: "dave@gridworkz.com",
     sender_name: from,
     company_name: "SaasFrontends",
     company_address: process.env.REMIX_COMPANY_ADDRESS,

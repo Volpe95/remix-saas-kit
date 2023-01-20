@@ -8,7 +8,7 @@ export default function JoinNow() {
               <span className="block">Download this template.</span>
             </h2>
             <p className="mt-4 text-lg leading-6 text-gray-100 dark:text-gray-400">
-              Start building your own SaaS application. Or learn how it's done in React, React, React and Svelte.
+              Start building your own SaaS application today.
             </p>
             <a
               href="https://alexandromg.gumroad.com/l/SaasFrontends-Remix"
