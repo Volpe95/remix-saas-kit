@@ -159,7 +159,7 @@ export default function EditWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
     inputName.current?.select();
     inputName.current?.focus();
 
-    setUsers(data.workspace?.users.map((f) => f.user) ?? []);
+    setUsers(data.workspace?.users.map((f) => f.user) as any ?? []);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -168,7 +168,7 @@ export default function EditWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
     navigate("/app/settings/workspaces");
   }
   function remove() {
-    confirmRemove.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t<string>("shared.cancel"), t("shared.warningCannotUndo"));
+    confirmRemove.current?.show(t("shared.confirmDelete"), t<string>("shared.delete"), t<string>("shared.cancel"), t<string>("shared.warningCannotUndo"));
   }
   function yesRemove() {
     if (appData.currentRole == TenantUserRole.MEMBER || appData.currentRole == TenantUserRole.GUEST) {
@@ -516,7 +516,7 @@ export default function EditWorkspaceRoute({ maxSize = "sm:max-w-lg" }: Props) {
       <ConfirmModal ref={confirmRemove} onYes={yesRemove} />
       <ErrorModal ref={errorModal} />
       <SuccessModal ref={successModal} onClosed={close} />
-      <SelectUsers ref={selectUsers} onSelected={selectedUsers} items={data.tenantUsers.map((f) => f.user)} />
+      <SelectUsers ref={selectUsers} onSelected={selectedUsers} items={data.tenantUsers.map((f) => f.user) as any} />
     </div>
   );
 }

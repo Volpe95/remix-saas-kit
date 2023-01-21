@@ -1,4 +1,4 @@
-## remix-saas-kit
+## remix-saas-kit - Now with React18!
 
 ![Remix SaaS kit](https://yahooder.sirv.com/saasfrontends/remix/ss/cover.png)
 

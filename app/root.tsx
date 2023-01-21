@@ -1,5 +1,4 @@
 import styles from "./styles/app.css";
-//import { useSetupTranslations } from "remix-i18next";
 import { createUserSession, getUserInfo } from "./utils/session.server";
 import { loadRootData, useRootData } from "./utils/data/useRootData";
 import TopBanner from "./components/ui/banners/TopBanner";
@@ -56,7 +55,7 @@ function Document({ children, title = `Remix SaasFrontend` }: { children: React.
  
   // Get the locale from the loader
   //let { locale } = useLoaderData<typeof loader>() as any;
-  let { i18n } = useTranslation();  
+  //let { i18n } = useTranslation();  
 
   // This hook will change the i18n instance language to the current locale
   // detected by the loader, this way, when we do something to change the
@@ -65,7 +64,7 @@ function Document({ children, title = `Remix SaasFrontend` }: { children: React.
   useChangeLanguage(data.locale);
 
   return (
-    <html lang={data?.locale} dir={i18n.dir()} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
+    <html lang={data?.locale} className={data?.lightOrDarkMode === "dark" ? "dark" : ""}>
       <head>
         <meta charSet="utf-8" />
         <Meta />
@@ -131,7 +130,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function App() {
 
   let { locale } = useLoaderData<{ locale: string }>();
-  //useSetupTranslations(locale);
+  useTranslation(locale);
 
   return (
     <Document>
