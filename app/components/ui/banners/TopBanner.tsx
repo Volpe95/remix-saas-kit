@@ -137,7 +137,7 @@ export default function TopBanner() {
               </div>
               <div className="flex-shrink-0 order-2 mt-0 w-auto">
                 <a
-                  href="https://alexandromg.gumroad.com/l/SaasFrontends-Remix"
+                  href="https://github.com/kubeworkz/remix-saas-kit"
                   target="_blank"
                   className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm sm:text-sm font-medium text-yellow-900 bg-yellow-400 hover:bg-yellow-500"
                 >
