@@ -4,6 +4,8 @@ This is v0.0.1 of [SaasRock](http://saasrock.com/?ref=AlexandroMtzG/remix-saas-k
 
 _*⚠️ This version is not maintained anymore as SaasRock is a commercial product (currently at v0.8), but this is still a good starting point for your SaaS project ⚠️*_
 
+### Upgraded to React18
+
 ## Getting started
 
 1. Create the `.env` file and set the following values:
