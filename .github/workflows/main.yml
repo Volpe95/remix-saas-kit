@@ -42,8 +42,20 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            
             cd /home/ubuntu/remix-saas-kit
             
+            #installing node
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt install nodejs
+            sudo apt install build-essential
+
+            #installing yarn 
+            npm install --global yarn
+
+            #installing pm2 
+            npm install --global pm2 
+
             yarn install 
 
             pm2 delete sass-remix-kit
