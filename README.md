@@ -1,19 +1,12 @@
-## remix-saas-kit
+## Remix SaaS kit
 
-![Remix SaaS kit](https://yahooder.sirv.com/saasfrontends/remix/ss/cover.png)
+This is v0.0.1 of [SaasRock](http://saasrock.com/?ref=AlexandroMtzG/remix-saas-kit) - The One-Person SaaS Framework. [A lot has been added](https://saasrock.com/changelog) since this version.
 
-### Edition
+_*⚠️ This version is not maintained anymore as SaasRock is a commercial product (currently at v0.8), but this is still a good starting point for your SaaS project ⚠️*_
 
-| Edition   | Vue2 | Vue3 | React | Svelte | Remix |
-| --------- | ---- | ---- | ----- | ------ | ----- |
-| Starter   |      |      |       |        |       |
-| Sandbox   |      |      |       |        |       |
-| Essential |      |      |       |        | ✔️    |
-| Premium   |      |      |       |        |       |
+### Upgraded to React18!
 
-[View all editions](https://saasfrontends.com).
-
-### Getting started
+## Getting started
 
 1. Create the `.env` file and set the following values:
 
@@ -74,3 +67,8 @@ yarn dev
 20. Go to `app/settings/workspaces` and `Create`, `Edit` and `Delete` workspaces.
 
 21. That's it!
+
+## More open source projects
+
+- [RemixBlocks](https://github.com/AlexandroMtzG/remix-blocks) - Ready-to-use Remix + Tailwind CSS routes and components.
+- [RemixPageBlocks](https://github.com/AlexandroMtzG/remix-page-blocks) - Simple page block editor with Remix and Tailwind CSS.

@@ -40,9 +40,9 @@ export default function AdminTenantRoute() {
         </div>
       </div>
       <div>
-        hello
+        Hello
         {/* {selected === 0 && <TenantProfile id={id} />}
-        {selected === 1 && <TenantSubscription id={id} />} */}
+        {selected === 1 && <TenantSubscription id={id} /> */}
       </div>
     </div>
   );
